@@ -1,0 +1,18 @@
+@import "Variables/Variables.scss";
+// TODO
+.invoice {
+    display: flex;
+    gap: 20px;
+    color: $softWhite;
+    background-color: $softBlack;
+    padding: 20px;
+    margin: 20px;
+    justify-content: space-between;
+
+    a {
+        color: $softWhite;
+        &:visited {
+            color: $softWhite;
+        }
+    }    
+}

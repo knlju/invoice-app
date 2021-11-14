@@ -1,24 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import InvoiceList from "./Components/InvoiceList";
+import { InvoiceProvider } from "./Context/InvoiceContext"
+import { Routes, Route } from "react-router-dom";
+import InvoicePage from "./Components/InvoicePage";
+import Header from "./Components/Header";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <InvoiceProvider>
+        <Header />
+        <Routes>
+          <Route exact path="/" element={<InvoiceList />} />
+          <Route path="/invoices/:id" element={<InvoicePage />} />
+        </Routes>
+    </InvoiceProvider>
   );
 }
 

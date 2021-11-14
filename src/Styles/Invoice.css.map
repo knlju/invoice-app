@@ -1,0 +1,10 @@
+{
+    "version": 3,
+    "mappings": "AAEA,AAAA,QAAQ,CAAC;EACL,OAAO,EAAE,IAAI;EACb,GAAG,EAAE,IAAI;EACT,KAAK,ECLG,IAAI;EDMZ,gBAAgB,ECLR,IAAI;EDMZ,OAAO,EAAE,IAAI;EACb,MAAM,EAAE,IAAI;EACZ,eAAe,EAAE,aAAa;CAQjC;;AAfD,AASI,QATI,CASJ,CAAC,CAAC;EACE,KAAK,ECZD,IAAI;CDgBX;;AAdL,AAWQ,QAXA,CASJ,CAAC,AAEI,QAAQ,CAAC;EACN,KAAK,ECdL,IAAI;CDeP",
+    "sources": [
+        "Invoice.scss",
+        "Variables/Variables.scss"
+    ],
+    "names": [],
+    "file": "Invoice.css"
+}
