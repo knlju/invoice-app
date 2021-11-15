@@ -3,11 +3,16 @@ import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import { useState } from 'react/cjs/react.development'
 import { InvoiceContext } from '../Context/InvoiceContext'
+import ConfirmationModal from './ConfirmationModal'
+
+
+
 
 export default function InvoicePage() {
     const { id } = useParams()
     const [invoices, setInvoices] = useContext(InvoiceContext)
     const [invoice, setInvoice] = useState(null)
+    const [modalOpen, setModalOpen] = useState(false)
 
     const deleteInvoice = () => {
         const newInvoices = [...invoices]
@@ -24,12 +29,13 @@ export default function InvoicePage() {
     return (
         <div className="invoice-page">
             <div>
-                <Link to="/">
-                    <button onClick={deleteInvoice}>
-                        delete invoice
-                    </button>
-                </Link>
+                <button onClick={() => setModalOpen(true)}>
+                    delete invoice
+                </button>
             </div>
+
+            {modalOpen && <ConfirmationModal deleteInvoice={deleteInvoice} setModalOpen={setModalOpen} />}
+
             <h2>Invoice page</h2>
             {invoice ?
                 <h3>{invoice.id}</h3>
