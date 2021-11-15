@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react'
 import { useParams } from 'react-router'
+import { Link } from 'react-router-dom'
 import { useState } from 'react/cjs/react.development'
 import { InvoiceContext } from '../Context/InvoiceContext'
 
@@ -8,15 +9,27 @@ export default function InvoicePage() {
     const [invoices, setInvoices] = useContext(InvoiceContext)
     const [invoice, setInvoice] = useState(null)
 
+    const deleteInvoice = () => {
+        const newInvoices = [...invoices]
+        newInvoices.splice(newInvoices.findIndex(inv => inv.id === id), 1)
+        setInvoices(newInvoices)
+    }
+
     useEffect(() => {
         const foundInv = invoices.find(inv => inv.id === id)
         // TODO mock ucitavanja, obrisati kasnije
         setTimeout(() => setInvoice(foundInv), 2000)
-
     }, [])
 
     return (
         <div className="invoice-page">
+            <div>
+                <Link to="/">
+                    <button onClick={deleteInvoice}>
+                        delete invoice
+                    </button>
+                </Link>
+            </div>
             <h2>Invoice page</h2>
             {invoice ?
                 <h3>{invoice.id}</h3>

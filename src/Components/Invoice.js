@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import "../Styles/Invoice.css"
 
 export default function Invoice({ id, description, status }) {
     return (

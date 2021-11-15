@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import "../Styles/InvoiceList.css"
 import { InvoiceContext } from '../Context/InvoiceContext'
 import Invoice from './Invoice'
 

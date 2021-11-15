@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AAAA,AAAA,aAAa,CAAC;EACV,KAAK,EAAE,GAAG;CACb",
-    "sources": [
-        "InvoiceList.scss"
-    ],
-    "names": [],
-    "file": "InvoiceList.css"
-}
