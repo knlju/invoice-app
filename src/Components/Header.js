@@ -6,7 +6,6 @@ import Avatar from '../assets/image-avatar.jpg'
 
 const HeaderStyle = styled.header ` 
     background-color: #373B53;
-    /* padding: 27px 0; */
     height: 72px;
     display: flex;
     align-items: center;

@@ -5,7 +5,7 @@ import {GlobalStyles} from './GlobalStyles'
 const WrapperStyle = styled.div ` 
     display: flex;
     flex-direction: column;
-    background-color: blue;
+    background-color: #F2F2F2;
     min-height: 100vh;
 
     @media screen and (min-width: 1024px) {

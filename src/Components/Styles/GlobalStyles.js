@@ -1,14 +1,11 @@
 import {createGlobalStyle} from 'styled-components'
 
 export const GlobalStyles = createGlobalStyle ` 
-    @import url('https://fonts.googleapis.com/css2?family=Spartan:wght@300;400;500;700&display=swap');
 
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-    }
-    html {
         font-family: 'Spartan', sans-serif;
     }
     body {
@@ -54,6 +51,13 @@ export const GlobalStyles = createGlobalStyle `
         font-weight: 500;
         font-size: 12px;
         line-height: 15px;
+        letter-spacing: -0.25px;
+    }
+    span {
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 15px;
+        color: #7E88C3;
         letter-spacing: -0.25px;
     }
 
