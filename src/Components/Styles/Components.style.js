@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 
-
 // purple, light, dark, draft light, draft dark, delete, add new item
 export const Button = styled.button`
     border-radius: 24px;
@@ -16,7 +15,7 @@ export const Button = styled.button`
                 return theme.light ? "#373B53" : "#373B53"
             case "delete":
                 return "#EC5757"
-            case "new":
+            case "new-item":
                 return "#F9FAFE"
             default:
                 return "black"
@@ -32,7 +31,7 @@ export const Button = styled.button`
                 return theme.dark ? "#DFE3FA" : "#888EB0"
             case "delete":
                 return "#fff"
-            case "new":
+            case "new-item":
                 return "#7E88C3"
             default:
                 return "white"
@@ -50,12 +49,11 @@ export const Button = styled.button`
                     return theme.dark ? "#0C0E16" : "#1E2139"
                 case "delete":
                     return "#FF9797"
-                case "new":
+                case "new-item":
                     return "#DFE3FA"
                 default:
                     return "gray"
             }
         }};
     }
-
 `

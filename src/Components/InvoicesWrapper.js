@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
 import InvoiceList from './InvoiceList'
 import { InvoiceContext } from '../Context/InvoiceContext'
+import { Button } from './Styles/Components.style'
 
 
 const InvoicesWrapper = props => {
@@ -19,27 +20,37 @@ const InvoicesWrapper = props => {
     }
 
     return (
-        <div>
+        <>
             <div>
-                <div>Invoices</div>
-                <div>There are {invoices.length} invoices</div>
                 <div>
-                    <div>Filter by</div>
+                    <h1>Invoices</h1>
+                    <div>There are {invoices.length} invoices</div>
+                </div>
+                <div>
                     <div>
-                        <label htmlFor="draft">
-                            <input type="checkbox" name="draft" id="draft" value={filters.includes("draft")} onChange={e => handleFilterChange("draft")} /> Draft
-                        </label>
-                        <label htmlFor="pending">
-                            <input type="checkbox" name="pending" id="pending" value={filters.includes("pending")} onChange={e => handleFilterChange("pending")} /> Pending
-                        </label>
-                        <label htmlFor="paid">
-                            <input type="checkbox" name="paid" id="paid" value={filters.includes("paid")} onChange={e => handleFilterChange("paid")} /> Paid 
-                        </label>
+                        <div>Filter by status</div>
+                        <div>
+                            <label htmlFor="draft">
+                                <input type="checkbox" name="draft" id="draft" value={filters.includes("draft")} onChange={e => handleFilterChange("draft")} /> Draft
+                            </label>
+                            <label htmlFor="pending">
+                                <input type="checkbox" name="pending" id="pending" value={filters.includes("pending")} onChange={e => handleFilterChange("pending")} /> Pending
+                            </label>
+                            <label htmlFor="paid">
+                                <input type="checkbox" name="paid" id="paid" value={filters.includes("paid")} onChange={e => handleFilterChange("paid")} /> Paid 
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <Button type="purple">
+                            {/* TODO add plus */}
+                            New Invoice
+                        </Button>
                     </div>
                 </div>
             </div>
             <InvoiceList invoices={invoices} filters={filters} />
-        </div>
+        </>
     )
 }
 

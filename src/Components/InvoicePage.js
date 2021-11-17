@@ -5,6 +5,7 @@ import { useState } from 'react/cjs/react.development'
 import { InvoiceContext } from '../Context/InvoiceContext'
 import ConfirmationModal from './ConfirmationModal'
 import { Button } from './Styles/Components.style'
+import GoBackLink from './GoBackLink'
 
 export default function InvoicePage() {
     const { id } = useParams()
@@ -34,11 +35,7 @@ export default function InvoicePage() {
 
     return (
         <div className="invoice-page">
-            <div>
-                <Link to="/">
-                   {"<"} Go back
-                </Link>
-            </div>
+            <GoBackLink />
             <div>
                 <Button type="edit" onClick={() => alert("ne diraj")}>
                     Edit
