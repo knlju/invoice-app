@@ -14,6 +14,18 @@ export function InvoiceProvider({ children }) {
         document.title = `Invoices (${invoices.length})`
     }, [invoices])
 
+    // TODO: kad budemo hteli da napravimo server
+
+    // const [ invoices, setInvoice ] = useState([])
+
+    // useEffect(()=>{
+    //     (async ()=> {
+    //         const appData = await fetch("https://invoice-v1-be.herokuapp.com/invoices")
+    //         const json = await appData.json()
+    //         setInvoice(json)
+    //     })()
+    // }, [])
+
     return (
         <InvoiceContext.Provider value={[invoices, setInvoice]}>
             {children}

@@ -41,18 +41,26 @@ const NoInvoiceWrapper = styled.div `
     }
 `
 
-export default function InvoiceList() {
+export default function InvoiceList({filters}) {
     const [invoices, setInvoices] = useContext(InvoiceContext)
 
     return (
         <>
             <InvoiceWrapper>
-                {invoices.length !== 0 ? invoices.map(invoice => <Invoice {...invoice} key={invoice.id} /> ) : 
-                <NoInvoiceWrapper>
-                    <img src={BackgroundImg} alt="ilustration-empty" />
-                    <h2>There is nothing here</h2>
-                    <p>Create an invoice by clicking the <br /> <span>New</span> button and get started</p>
-                </NoInvoiceWrapper>}
+                {/* TODO: kad filter ne vrati nijedan invoice onda se ne prikazuje slika  */}
+                {
+                    invoices.length !== 0 ?
+                    invoices.map(invoice => {
+                        if(filters.length === 0) return <Invoice {...invoice} key={invoice.id} />
+                        else if(filters.includes(invoice.status)) return <Invoice {...invoice} key={invoice.id} />
+                        return null
+                    })
+                    : (<NoInvoiceWrapper>
+                        <img src={BackgroundImg} alt="ilustration-empty" />
+                        <h2>There is nothing here</h2>
+                        <p>Create an invoice by clicking the <br /> <span>New</span> button and get started</p>
+                    </NoInvoiceWrapper>)
+                }
             </InvoiceWrapper>
         </>
     )

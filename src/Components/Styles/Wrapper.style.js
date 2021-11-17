@@ -19,7 +19,6 @@ function Wrapper({children}) {
             <GlobalStyles />
             {children}
         </WrapperStyle>
-        
     )
 }
 

@@ -8,42 +8,75 @@ const ModalWrapper = styled.div`
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(0,0,0,.7);
+    background-color: rgba(0,0,0,.6);
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1;
 `
 
-// TODO
+// TODO uzmi iz variables
 const ModalContent = styled.div`
     background: #FFFFFF;
     box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.100397);
     border-radius: 8px;
-    ${props => props.padding ? 'padding: 100px;' : 'padding: 48px;'}
-    border: 1px solid red;
-    ${props => props.padding && 'border-color: blue;'}
+    padding: 32px;
+    max-width: 480px;
+    margin: 0 24px;
+
+    h2 {
+        font-size: 20px;
+        line-height: 160%;
+        letter-spacing: -0.416667px;
+        color: #0C0E16;
+    }
+
+    p {
+        margin-top: 8px;
+        font-weight: 500;
+        /* TODO: mozda je 12px */
+        font-size: 13px;
+        line-height: 22px;
+        letter-spacing: -0.25px;
+        color: #888EB0;
+    }
+
+    @media screen and (min-width: 768px) {
+        padding: 48px;
+        h2 {
+            font-size: 24px;
+            line-height: 32px;
+        }
+    }
+    /* border: 1px solid red; */
 `
 
-export default function ConfirmationModal({ deleteInvoice, setModalOpen }) {
+const ButtonContainer = styled.div`
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+`
+
+export default function ConfirmationModal({ invoiceId, deleteInvoice, setModalOpen }) {
 
     const handleDeleteClick = () => {
         deleteInvoice()
         setModalOpen(false)
     }
 
-    const handleCancleClick = () => setModalOpen(false)
+    const closeModal = e => setModalOpen(false)
 
     return ReactDOM.createPortal(
-        <ModalWrapper>
-            <ModalContent>
-                <h3>Confirm Deletion</h3>
-                <div>Are you sure you want to delete invoice #XM9141? This action cannot be undone.</div>
-                <div>
-                    <button onClick={handleCancleClick}>Cancel</button>
+        <ModalWrapper onClick={closeModal}>
+            <ModalContent onClick={e => e.stopPropagation()}>
+                <h2>Confirm Deletion</h2>
+                <p>Are you sure you want to delete invoice #XM9141? This action cannot be undone.</p>
+                <ButtonContainer>
+                    <button onClick={closeModal}>Cancel</button>
                     <button onClick={handleDeleteClick}>Delete</button>
-                </div>
+                </ButtonContainer>
             </ModalContent>
-            <ModalContent padding />
         </ModalWrapper>
     , document.getElementById("portal"))
 }
