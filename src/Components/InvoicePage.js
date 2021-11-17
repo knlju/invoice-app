@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react/cjs/react.development'
 import { InvoiceContext } from '../Context/InvoiceContext'
 import ConfirmationModal from './ConfirmationModal'
+import { Button } from './Styles/Components.style'
 
 export default function InvoicePage() {
     const { id } = useParams()
@@ -39,16 +40,16 @@ export default function InvoicePage() {
                 </Link>
             </div>
             <div>
-                <button onClick={() => alert("ne diraj")}>
-                    edit invoice
-                </button>
-                <button onClick={() => setModalOpen(true)}>
-                    delete invoice
-                </button>
+                <Button type="edit" onClick={() => alert("ne diraj")}>
+                    Edit
+                </Button>
+                <Button type="delete" onClick={() => setModalOpen(true)}>
+                    Delete
+                </Button>
                 {(invoice && invoice.status !== "paid") && (
-                    <button onClick={markAsPaid}>
+                    <Button type="purple" onClick={markAsPaid}>
                         Mark as Paid
-                    </button>
+                    </Button>
                 )}
             </div>
 

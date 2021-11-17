@@ -1,5 +1,4 @@
-import React, { useContext } from 'react'
-import { InvoiceContext } from '../Context/InvoiceContext'
+import React from 'react'
 import Invoice from './Invoice'
 import styled from 'styled-components'
 import {GlobalStyles} from '../Components/Styles/GlobalStyles'
@@ -41,9 +40,8 @@ const NoInvoiceWrapper = styled.div `
     }
 `
 
-export default function InvoiceList({filters}) {
-    const [invoices, setInvoices] = useContext(InvoiceContext)
-
+export default function InvoiceList({invoices, filters}) {
+    
     return (
         <>
             <InvoiceWrapper>

@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
 import InvoiceList from './InvoiceList'
+import { InvoiceContext } from '../Context/InvoiceContext'
+
 
 const InvoicesWrapper = props => {
     const [filters, setFilters] = useState([])
+    const [invoices, setInvoices] = useContext(InvoiceContext)
 
     const handleFilterChange = filter => {
         const newFilters = [...filters]
@@ -19,7 +22,7 @@ const InvoicesWrapper = props => {
         <div>
             <div>
                 <div>Invoices</div>
-                <div>There are n invoices</div>
+                <div>There are {invoices.length} invoices</div>
                 <div>
                     <div>Filter by</div>
                     <div>
@@ -35,7 +38,7 @@ const InvoicesWrapper = props => {
                     </div>
                 </div>
             </div>
-            <InvoiceList filters={filters} />
+            <InvoiceList invoices={invoices} filters={filters} />
         </div>
     )
 }

@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
+import {useNavigate} from 'react-router-dom';
+import { Button } from './Styles/Components.style';
 
 const ModalWrapper = styled.div`
     position: fixed;
@@ -60,9 +62,12 @@ const ButtonContainer = styled.div`
 
 export default function ConfirmationModal({ invoiceId, deleteInvoice, setModalOpen }) {
 
+    const navigate = useNavigate()
+
     const handleDeleteClick = () => {
         deleteInvoice()
         setModalOpen(false)
+        navigate("/")
     }
 
     const closeModal = e => setModalOpen(false)
@@ -71,10 +76,10 @@ export default function ConfirmationModal({ invoiceId, deleteInvoice, setModalOp
         <ModalWrapper onClick={closeModal}>
             <ModalContent onClick={e => e.stopPropagation()}>
                 <h2>Confirm Deletion</h2>
-                <p>Are you sure you want to delete invoice #XM9141? This action cannot be undone.</p>
+                <p>Are you sure you want to delete invoice {invoiceId}? This action cannot be undone.</p>
                 <ButtonContainer>
-                    <button onClick={closeModal}>Cancel</button>
-                    <button onClick={handleDeleteClick}>Delete</button>
+                    <Button type="edit" onClick={closeModal}>Cancel</Button>
+                    <Button type="delete" onClick={handleDeleteClick}>Delete</Button>
                 </ButtonContainer>
             </ModalContent>
         </ModalWrapper>
