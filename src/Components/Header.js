@@ -15,6 +15,8 @@ const HeaderStyle = styled.header `
     @media screen and (min-width: 1024px) {
         flex: 0 0 103px;
         height: auto;
+        flex-direction: column;
+        border-radius: 0 20px 20px 0;
     }
 `
 const HeaderLogo = styled.div ` 
@@ -27,6 +29,10 @@ const HeaderLogo = styled.div `
     border-radius: 0 20px 20px 0;
     position: relative;
     cursor: pointer;
+    @media screen and (min-width: 1024px) {
+        height: 103px;
+        width: 100%;
+    }
 
     &::after {
         content: '';
@@ -45,16 +51,22 @@ const HeaderLogo = styled.div `
     }
 `
 const HeaderIcons = styled.div ` 
-    gap: 20px;
+    gap: 30px;
     display: flex;
     align-items: center;
+    @media screen and (min-width: 1024px) {
+        flex-direction: column;
+    }
 `
 const Icon = styled.button ` 
     background-image: url(${Moon});
     background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: cover;
     width: 20px;
     height: 20px;
     position: relative;
+    
 
      &::after {
         content: '';
@@ -64,6 +76,12 @@ const Icon = styled.button `
         width: 1px;
         background-color: #494E6E;
         height: 72px;
+        @media screen and (min-width: 1024px) {
+            right: 10px;
+            top: 0;
+            transform: rotate(90deg);
+            height: 103px;
+        }
     }
 `
 const AvatarImg = styled.img ` 
@@ -72,6 +90,11 @@ const AvatarImg = styled.img `
     width: 32px;
     height: 32px;
     margin: 0 24px;
+    @media screen and (min-width: 1024px) {
+        height: 40px;
+        width: 40px;
+        margin: 24px 0;
+    }
 `
 
 export default function Header() {
