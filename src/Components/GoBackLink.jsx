@@ -20,10 +20,16 @@ export const GoBackLinkWrapper = styled.div`
     letter-spacing: -0.25px;
     color: #0C0E16;
     gap: 24px;
+    align-items: center;
+    margin-left: 24px;
 
     img {
         height: 9px;
     }
+
+    @media screen and (min-width: 768px) {
+            margin-left: 0;
+        }
 `
 
 

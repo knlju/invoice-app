@@ -7,10 +7,22 @@ import ConfirmationModal from './ConfirmationModal'
 import { Button } from './Styles/Components.style'
 import GoBackLink from './GoBackLink'
 import styled from 'styled-components'
+import {PaymentStatusCont, PaymentStatus, PaymentStatusDot} from '../Components/Invoice'
 // import { url } from 'inspector'
 
 const InvoiceCont = styled.div ` 
-        padding: 0 24px;
+        padding: 32px 0;
+
+        @media screen and (min-width: 768px) {
+            padding: 48px 24px;
+            max-width: 688px;
+            margin: 0 auto;
+        }
+        @media screen and (min-width: 1024px) {
+            padding: 64px 24px;
+            max-width: 730px;
+        }
+
     `
     const InvoiceMain = styled.div ` 
         padding: 24px;
@@ -26,6 +38,10 @@ const InvoiceCont = styled.div `
         flex-direction: column;
         gap: 30px;
         margin-bottom: 30px;
+        @media screen and (min-width: 768px) {
+            flex-direction: row;
+            justify-content: space-between;
+        }
 
         div:first-child>h3 {
             display: flex;
@@ -39,16 +55,30 @@ const InvoiceCont = styled.div `
         div:last-child span {
             margin-bottom: 4px;
         }
+        div:last-child {
+            @media screen and (min-width: 768px) {
+                text-align: right;
+            }
+        }
     `
 
     const InvoiceMainMiddle = styled.div ` 
         display: flex;
         flex-direction: column;
+
+        @media screen and (min-width: 768px) {
+            flex-direction: row;
+            justify-content: flex-start;
+            gap: 100px;
+        }
     
 
         & > div:first-child {
             display: flex;
             gap: 40px;
+            @media screen and (min-width: 768px) {
+                gap: 100px;
+            }
 
            & > div:first-child span {
                margin-bottom: 12px;
@@ -129,7 +159,7 @@ const InvoiceCont = styled.div `
             font-weight: 700;
             text-align: right;
         }
-        span:not(:last-child) {
+        &>span:not(:last-child) {
             display: none;
             @media screen and (min-width: 768px) {
                 display: inline-block;
@@ -174,6 +204,72 @@ const InvoiceCont = styled.div `
         }
     `
 
+    const ButtonsContainer = styled.div `  
+    
+        background-color: #fff;
+        padding: 20px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        order: 1;
+        @media screen and (min-width: 768px) {
+            order: 0;
+            /* display: inline-block; */
+            /* width: 250px; */
+            border-radius: 0 8px 8px 0;
+        }
+    `
+    const InvoiceMainWrapper = styled.div ` 
+        padding: 0 24px;
+        margin-bottom: 56px;
+        @media screen and (min-width: 768px) {
+            padding: 0;
+            width: 100%;
+            margin-top: 24px;
+        }
+    `
+    const InvoiceHelperContainer = styled.div ` 
+        display: flex;
+        flex-direction: column;
+
+        @media screen and (min-width: 768px) {
+            flex-wrap: wrap;
+            flex-direction: row;
+            margin-top: 32px;
+            
+        }
+    `
+    const StatusHelperContainer = styled.div ` 
+        padding: 0 24px;
+        margin-bottom: 16px;
+        margin-top: 32px;
+        @media screen and (min-width: 768px) {
+            /* display: inline-block; */
+            /* width: 250px; */
+            margin-bottom: 0;
+            margin-top: 0;
+            padding: 0;
+            flex-grow: 1;
+            display: inline-grid;
+        }
+    `
+    const StatusContainer = styled.div ` 
+        padding: 24px;
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 8px;
+
+        @media screen and (min-width: 768px) {
+            gap: 16px;
+            border-radius: 8px 0 0 8px;
+            justify-content: flex-start;
+            /* padding-right: 166px; */
+        }
+        
+    `
 export default function InvoicePage() {
     const { id } = useParams()
     const [invoices, setInvoices] = useContext(InvoiceContext)
@@ -200,13 +296,28 @@ export default function InvoicePage() {
         setInvoices(newInvoices)
     }
 
-    
+    const {status} = invoice || {};
 
     return (
             
         <InvoiceCont>
             <GoBackLink />
-            <div>
+
+            <InvoiceHelperContainer>
+
+            <StatusHelperContainer>
+                <StatusContainer>
+                    <span>Status</span>
+                    <PaymentStatusCont status={status}>
+                        <PaymentStatusDot status={status} />
+                        <PaymentStatus status={status} >
+                            {status} 
+                        </PaymentStatus>
+                </PaymentStatusCont>
+                </StatusContainer>
+            </StatusHelperContainer>
+
+            <ButtonsContainer>
                 <Button type="edit" onClick={() => alert("ne diraj")}>
                     Edit
                 </Button>
@@ -218,15 +329,13 @@ export default function InvoicePage() {
                         Mark as Paid
                     </Button>
                 )}
-            </div>
+            </ButtonsContainer>
 
             {modalOpen && <ConfirmationModal invoiceId={id} deleteInvoice={deleteInvoice} setModalOpen={setModalOpen} />}
 
-            <h2>Invoice page</h2>
-
 
             {invoice ?
-
+                <InvoiceMainWrapper>
                 <InvoiceMain>
                     <InvoiceMainHeader>
                         <div>
@@ -298,12 +407,13 @@ export default function InvoicePage() {
                     </InvoiceTotal>
 
                 </InvoiceMain>
+                </InvoiceMainWrapper>
                 
 
 
                 : <div>loading...</div>}
 
-
+            </InvoiceHelperContainer>
         </InvoiceCont>
     )
 }

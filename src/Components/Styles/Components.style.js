@@ -5,6 +5,7 @@ export const Button = styled.button`
     border-radius: 24px;
     padding: 17px 24px;
     font-weight: 700;
+    font-size: 12px;
     background-color: ${({theme, type}) => {
         switch (type){
             case "purple":

@@ -79,7 +79,7 @@ const TotalDue = styled.span `
     }
 `
 
-const PaymentStatusCont = styled.div ` 
+export const PaymentStatusCont = styled.div ` 
 	padding: 12px 12px;
 	border-radius: 6px;
     max-width: 104px;
@@ -100,7 +100,7 @@ const PaymentStatusCont = styled.div `
 		}
 	}}
 `
-const PaymentStatus = styled.span `
+export const PaymentStatus = styled.span `
     color: #33D69F;
     text-transform: capitalize;
     font-weight: 700;
@@ -118,7 +118,7 @@ const PaymentStatus = styled.span `
 	
 `
 
-const PaymentStatusDot = styled.div ` 
+export const PaymentStatusDot = styled.div ` 
 		height: 8px;
         width: 8px;
         border-radius: 50%;
