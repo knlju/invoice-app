@@ -44,7 +44,7 @@ const IdWrapper = styled.div `
 const ClientId = styled.span ` 
     font-weight: 700;
     text-transform: uppercase;
-	margin-right: 125px;
+	margin-right: 110px;
 	color: #0C0E16;
 
     @media screen and (min-width: 768px) {
