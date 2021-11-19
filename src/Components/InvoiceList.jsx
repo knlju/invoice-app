@@ -5,14 +5,13 @@ import {GlobalStyles} from '../Components/Styles/GlobalStyles'
 import BackgroundImg from '../assets/illustration-empty.svg'
 
 const InvoiceWrapper = styled.div ` 
-    padding: 32px 24px;
+    padding: 32px 0;
 
     @media screen and (min-width: 768px) {
-		padding: 56px 48px;
+		padding: 56px 0;
 	}
     @media screen and (min-width: 1024px) {
-		padding: 72px 48px;
-        margin: 0 auto;
+		padding: 72px 0;
 	}
 `
 
@@ -23,7 +22,7 @@ const NoInvoiceWrapper = styled.div `
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 32px 24px;
+    padding: 32px 0;
 
     img {
         margin-bottom: 40px;

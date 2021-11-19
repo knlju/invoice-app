@@ -23,6 +23,7 @@ const NewInvoiceBtn = styled(Button) `
     display: flex;
     align-items: center;
     padding: 8px 15px 8px 8px;
+    margin-left: 18px;
 
     span {
         display: none;
@@ -42,6 +43,9 @@ const NewInvoiceHeader = styled.div `
     display: flex;
     align-items: center;
     justify-content: space-between;
+    /* padding: 0 24px; */
+    margin: 32px auto 0 auto;
+    width: 100%;
 `
 
 const NewInvoiceHeaderFilter = styled.div ` 
@@ -61,6 +65,7 @@ const InvoicesFilterMob = styled.span `
     display: none;
     @media screen and (min-width: 768px) { 
         display: inline-block;
+        margin-left: 4px;
     }
 
 `
@@ -69,6 +74,22 @@ const InvoicesFilterContainer = styled.div `
     display: flex;
     align-items: center;
     justify-content: center;
+
+    position: relative;
+
+    &>div:first-child {
+        display: flex;
+        align-items: center;
+        /* gap: 16px; */
+
+        span {
+            font-weight: 700;
+            color: #0C0E16;
+        }
+        span:last-child {
+            margin-left: 16px;
+        }
+    }
 `
 
 const FilterArrowDown = styled.span ` 
@@ -78,11 +99,66 @@ const FilterArrowDown = styled.span `
     background-position: center center;
     width: 12px;
     height: 4px;
+
+    ${({rotateArrow}) => {
+        return rotateArrow && 'transform: rotate(180deg);';
+    }}
+`
+
+const CheckboxModal = styled.div ` 
+    position: absolute;
+    top: 25px;
+    left: -105px;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 24px;
+    width: 190px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0px 10px 20px rgba(72, 84, 159, 0.25);
+    z-index: 1;
+
+    @media screen and (min-width: 1024px) {
+         left: -50px;
+    }
+
+    label {
+        display: flex;
+        gap: 10px;
+        align-items: baseline;
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 15px;
+        letter-spacing: -0.25px;
+        color: #1E2139;
+        cursor: pointer;
+    }
+
+    input {
+        position:relative;
+        top: 2px;
+    }
+`
+const NewInvoiceWrapper = styled.div ` 
+
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 327px;
+    @media screen and (min-width: 768px) {
+        max-width: 672px;
+    }
+    @media screen and (min-width: 1024px) {
+        max-width: 730px;
+    }
 `
 
 const InvoicesWrapper = props => {
     const [filters, setFilters] = useState([])
     const [invoices, setInvoices] = useContext(InvoiceContext)
+    const [showFilterModal, setShowFilterModal] = useState(false)
 
     const handleFilterChange = filter => {
         const newFilters = [...filters]
@@ -96,6 +172,7 @@ const InvoicesWrapper = props => {
 
     return (
         <>
+            <NewInvoiceWrapper>
             <NewInvoiceHeader>
                 <div>
                     <h2>Invoices</h2>
@@ -103,8 +180,9 @@ const InvoicesWrapper = props => {
                 </div>
                 <NewInvoiceHeaderFilter>
                     <InvoicesFilterContainer>
-                        <div>Filter <InvoicesFilterMob>by status</InvoicesFilterMob>   <FilterArrowDown /> </div>
-                        <div>
+                        <div onClick={() => setShowFilterModal(!showFilterModal)}> <span>Filter </span> <InvoicesFilterMob> by status</InvoicesFilterMob>   <FilterArrowDown rotateArrow={showFilterModal}/> </div>
+                            {/* TO DO - CUSTOM CHECKBOX */}
+                        {showFilterModal && <CheckboxModal>
                             <label htmlFor="draft">
                                 <input type="checkbox" name="draft" id="draft" value={filters.includes("draft")} onChange={e => handleFilterChange("draft")} /> Draft
                             </label>
@@ -114,11 +192,12 @@ const InvoicesWrapper = props => {
                             <label htmlFor="paid">
                                 <input type="checkbox" name="paid" id="paid" value={filters.includes("paid")} onChange={e => handleFilterChange("paid")} /> Paid 
                             </label>
-                        </div>
+                        </CheckboxModal>}
+
+                        
                     </InvoicesFilterContainer>
                     <div>
                         <NewInvoiceBtn type="purple">
-                            {/* TODO add plus */}
                             <IconPlusCont />
                             New<span>Invoice</span> 
                         </NewInvoiceBtn>
@@ -126,6 +205,8 @@ const InvoicesWrapper = props => {
                 </NewInvoiceHeaderFilter>
             </NewInvoiceHeader>
             <InvoiceList invoices={invoices} filters={filters} />
+
+            </NewInvoiceWrapper>
         </>
     )
 }

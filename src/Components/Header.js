@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Logo from '../assets/logo.svg'
 import Moon from '../assets/icon-moon.svg'
+import Sun from '../assets/icon-sun.svg'
 import Avatar from '../assets/image-avatar.jpg'
 
 const HeaderStyle = styled.header ` 
