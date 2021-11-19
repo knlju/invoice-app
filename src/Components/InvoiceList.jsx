@@ -42,17 +42,14 @@ const NoInvoiceWrapper = styled.div `
 
 export default function InvoiceList({invoices, filters}) {
     
+    const filteredInvoices = filters.length === 0 ? invoices: invoices.filter(invoice => filters.includes(invoice.status))
+
     return (
         <>
             <InvoiceWrapper>
-                {/* TODO: kad filter ne vrati nijedan invoice onda se ne prikazuje slika  */}
                 {
-                    invoices.length !== 0 ?
-                    invoices.map(invoice => {
-                        if(filters.length === 0) return <Invoice {...invoice} key={invoice.id} />
-                        else if(filters.includes(invoice.status)) return <Invoice {...invoice} key={invoice.id} />
-                        return null
-                    })
+                    filteredInvoices.length !== 0 ?
+                    filteredInvoices.map(invoice => <Invoice {...invoice} key={invoice.id} />)
                     : (<NoInvoiceWrapper>
                         <img src={BackgroundImg} alt="ilustration-empty" />
                         <h2>There is nothing here</h2>
@@ -63,3 +60,4 @@ export default function InvoiceList({invoices, filters}) {
         </>
     )
 }
+

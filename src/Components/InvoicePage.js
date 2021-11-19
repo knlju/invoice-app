@@ -8,6 +8,7 @@ import { Button } from './Styles/Components.style'
 import GoBackLink from './GoBackLink'
 import styled from 'styled-components'
 import {PaymentStatusCont, PaymentStatus, PaymentStatusDot} from '../Components/Invoice'
+import Form from './Form'
 // import { url } from 'inspector'
 
 const InvoiceCont = styled.div ` 
@@ -275,6 +276,7 @@ export default function InvoicePage() {
     const [invoices, setInvoices] = useContext(InvoiceContext)
     const [invoice, setInvoice] = useState(null)
     const [modalOpen, setModalOpen] = useState(false)
+    const [formOpen, setFormOpen] = useState(false)
 
     useEffect(() => {
         const foundInv = invoices.find(inv => inv.id === id)
@@ -301,8 +303,8 @@ export default function InvoicePage() {
     return (
             
         <InvoiceCont>
+            { formOpen && <Form invoice={invoice} /> }
             <GoBackLink />
-
             <InvoiceHelperContainer>
 
             <StatusHelperContainer>
@@ -318,7 +320,7 @@ export default function InvoicePage() {
             </StatusHelperContainer>
 
             <ButtonsContainer>
-                <Button type="edit" onClick={() => alert("ne diraj")}>
+                <Button type="edit" onClick={() => setFormOpen(true)}>
                     Edit
                 </Button>
                 <Button type="delete" onClick={() => setModalOpen(true)}>
@@ -382,20 +384,20 @@ export default function InvoicePage() {
                            </InvoiceTotalHeadingTitle>
 
                             {
-                                invoice.items.map(item =>  (
-                                        <InvoiceTotalHeadingInvoice>
-                                            <div>
-                                                    <h4>{item.name}</h4>
-                                                    <InvoiceTotalHeadingInvoiceMobileQNT>
-                                                        <span>{item.quantity}</span>
-                                                        <span>x</span>
-                                                        <span>£ {item.price}</span>
-                                                    </InvoiceTotalHeadingInvoiceMobileQNT>
-                                            </div>
-                                            <span>{item.quantity}</span>
-                                            <span>£ {item.price}</span>
-                                            <span>£ {item.total}</span>
-                                        </InvoiceTotalHeadingInvoice>
+                                invoice.items.map((item, i) =>  (
+                                    <InvoiceTotalHeadingInvoice key={i}>
+                                        <div>
+                                            <h4>{item.name}</h4>
+                                            <InvoiceTotalHeadingInvoiceMobileQNT>
+                                                <span>{item.quantity}</span>
+                                                <span>x</span>
+                                                <span>£ {item.price}</span>
+                                            </InvoiceTotalHeadingInvoiceMobileQNT>
+                                        </div>
+                                        <span>{item.quantity}</span>
+                                        <span>£ {item.price}</span>
+                                        <span>£ {item.total}</span>
+                                    </InvoiceTotalHeadingInvoice>
                                     ) 
                                 ) 
                             }
