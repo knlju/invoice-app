@@ -13,6 +13,7 @@ import Form from './Form'
 
 const InvoiceCont = styled.div ` 
         padding: 32px 0;
+         background-color: ${props => props.theme.color.body.bg};
 
         @media screen and (min-width: 768px) {
             padding: 48px 24px;
@@ -257,7 +258,8 @@ const InvoiceCont = styled.div `
     `
     const StatusContainer = styled.div ` 
         padding: 24px;
-        background-color: #fff;
+        /* background-color: #fff; */
+         background-color: ${props => props.theme.color.body.bg};
         display: flex;
         align-items: center;
         justify-content: space-between;

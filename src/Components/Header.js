@@ -1,12 +1,15 @@
 import React from 'react'
-import styled from 'styled-components'
+import { useState, useEffect } from 'react'
+import styled, { ThemeProvider  } from 'styled-components'
+// import styled from 'styled-components'
 import Logo from '../assets/logo.svg'
-import Moon from '../assets/icon-moon.svg'
-import Sun from '../assets/icon-sun.svg'
 import Avatar from '../assets/image-avatar.jpg'
+import { light, dark } from '../Components/Styles/Themes'
+import ThemeToggle from '../Components/ThemeToggle'
 
 const HeaderStyle = styled.header ` 
-    background-color: #373B53;
+    /* background-color: #373B53; */
+    background-color: ${props => props.theme.color.body.bg};
     height: 72px;
     display: flex;
     align-items: center;
@@ -58,16 +61,14 @@ const HeaderIcons = styled.div `
         flex-direction: column;
     }
 `
-const Icon = styled.button ` 
-    background-image: url(${Moon});
-    background-color: transparent;
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 20px;
-    height: 20px;
+const ButtonIcon = styled.button ` 
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
     position: relative;
     
-
      &::after {
         content: '';
         position: absolute;
@@ -97,12 +98,29 @@ const AvatarImg = styled.img `
     }
 `
 
-export default function Header() {
+
+export default function Header({toggleTheme}) {
+
+    // const [theme, setTheme] = useState('light')
+
+	// useEffect(() => {
+	// 	if (localStorage.getItem('theme') === undefined) {
+	// 		localStorage.setItem('theme', 'light')
+	// 	}
+	// 	setTheme(localStorage.getItem('theme'))
+	// }, [setTheme])
+
+    // function toggleTheme() {
+	// 	localStorage.setItem('theme', theme === 'light' ? 'dark' : 'light')
+    //     setTheme(localStorage.getItem('theme'))
+    // }
+
     return (
+        
         <HeaderStyle>
             <HeaderLogo />
             <HeaderIcons>
-                <Icon />
+                <ThemeToggle toggleTheme={toggleTheme} />
                 <AvatarImg />
             </HeaderIcons>
         </HeaderStyle>
