@@ -328,7 +328,7 @@ export default function InvoicePage() {
                 <Button type="delete" onClick={() => setModalOpen(true)}>
                     Delete
                 </Button>
-                {(invoice && invoice.status !== "paid") && (
+                {(invoice && invoice.status === "pending") && (
                     <Button type="purple" onClick={markAsPaid}>
                         Mark as Paid
                     </Button>
