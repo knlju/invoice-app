@@ -52,29 +52,58 @@ const getId = (function () {
     }
 })()
 
+// quick maths
+
+const getDifferenceInDays = (date1, date2) => Math.abs(parseInt((date1 - date2) / (1000 * 60 * 60 * 24), 10))
+
+const getDateFromDifference = (date, difference) => {
+    const newDate = new Date(date)
+    newDate.setDate(date.getDate() + parseInt(difference))
+    return new Date(newDate).toUTCString()
+}
+
+const emptyInvoice = {
+    senderAddress: {
+        street: '',
+        city: '',
+        postCode: '',
+        country: ''
+    },
+    clientName: '',
+    clientEmail: '',
+    clientAddress: {
+        street: '',
+        city: '',
+        postCode: '',
+        country: ''
+    },
+    createdAt: new Date().toUTCString(),
+    paymentTerms: '30',
+    paymentDue: getDateFromDifference(new Date(), 30),
+    description: '',
+    status: "draft",
+    items: [
+        {
+            name: "New Item", 
+            quantity: 0, 
+            price: 0, 
+            total: 0, 
+            id: getId()
+        }
+    ],
+    total: 0
+}
+
 // TODO finish
-const Form = ({invoice, setFormOpen}) => {
+const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
     const getInvoiceItemsMapped = () => {
         const invoiceCopy = {...invoice}
         invoiceCopy.items = invoiceCopy.items.map(item => {return {...item, id: getId()}})
         return invoiceCopy.items
-    }
-
-    // quick maths
-    const getDifferenceInDays = (date1, date2) => Math.abs(parseInt((date1 - date2) / (1000 * 60 * 60 * 24), 10))
-
-    const getDateFromDifference = (date, difference) => {
-        // TODO
-        console.log(date)
-        console.log(difference)
-        const newDate = new Date(date)
-        newDate.setDate(date.getDate() + parseInt(difference))
-        console.log(newDate)
-        return new Date(newDate)
-    }
+    }    
 
     const [ formData, setFormData ] = useState({
-        id: invoice.id,
+        id: invoice?.id || getId() + "",
         createdAt: invoice.createdAt,
         paymentDue: invoice.paymentDue,
         description: invoice.description,
@@ -86,9 +115,9 @@ const Form = ({invoice, setFormOpen}) => {
     const [ clientAddress, setClientAddress ] = useState({...invoice.clientAddress})
     const [ senderAddress, setSenderAddress ] = useState({...invoice.senderAddress})
     const [ items, setItems ] = useState(getInvoiceItemsMapped())
-    const [ paymentDue, setPaymentDue ] = useState(getDifferenceInDays(new Date(invoice.createdAt), new Date(invoice.paymentDue)))
-    const [ invoices, setInvoices ] = useContext(InvoiceContext)
+    const { invoices, setInvoices } = useContext(InvoiceContext)
     const [ totalState, setTotalState ] = useState(invoice.total)
+    const [ errList, setErrList ] = useState({senderAddress: {street: false}})
 
     useEffect(()=>{
         onTotalVariablesChange()
@@ -114,14 +143,13 @@ const Form = ({invoice, setFormOpen}) => {
         const newDate = getDateFromDifference(new Date(formData.createdAt), diff)
         setFormData(prevData => {return {
             ...prevData,
-            paymentDue: newDate
+            paymentDue: newDate.toString(),
+            paymentTerms: diff
         }})
-        setPaymentDue(diff)
     }
 
     const setItemValue = (e, id) => {
         const { name, value } = e.target
-        console.log(name, value)
         setItems(prevItems => {
             const newItems = prevItems.map(item => {
                 if(item.id === id) return {...item, [name]: value}
@@ -147,8 +175,71 @@ const Form = ({invoice, setFormOpen}) => {
         })
     }
 
-    const saveInvoice = () => {
-        console.log("Save Invocie")
+    const validateForm = () => {
+        let isValid = true
+        if(senderAddress.street.trim() === "") {
+            isValid = false
+            setErrList(prevErrs => {
+                return {
+                    ...prevErrs,
+                    senderAddress: {
+                        ...prevErrs.senderAddress,
+                        street: true
+                    }
+                }
+            })
+        }
+        return isValid
+        // errorList.senderAddress.street
+        // senderAddress: {
+        //     street: '',
+        //     city: '',
+        //     postCode: '',
+        //     country: ''
+        // },
+        // clientName: '',
+        // clientEmail: '',
+        // clientAddress: {
+        //     street: '',
+        //     city: '',
+        //     postCode: '',
+        //     country: ''
+        // },
+        // createdAt: new Date().toUTCString(),
+        // paymentTerms: '30',
+        // paymentDue: getDateFromDifference(new Date(), 30),
+        // description: '',
+        // status: "draft",
+        // items: [
+        //     {
+        //         name: "New Item", 
+        //         quantity: 0, 
+        //         price: 0, 
+        //         total: 0, 
+        //         id: getId()
+        //     }
+        // ],
+        // total: 0
+    }
+
+    const addInvoice = () => {
+        if(!validateForm()) return
+        const status = "pending"
+        const newInvoice = {
+            ...formData,
+            clientAddress,
+            senderAddress,
+            status,
+            items,
+            total: totalState
+        }
+        const newInvoices = [...invoices, newInvoice]
+        setInvoices(newInvoices)
+        setFormOpen(false)
+    }
+
+    const saveChanges = () => {
+        if(!validateForm()) return
         const newInvoice = {
             ...formData,
             clientAddress,
@@ -158,24 +249,53 @@ const Form = ({invoice, setFormOpen}) => {
         }
         const newInvoices = invoices.map(inv => inv.id === formData.id ? newInvoice : inv)
         setInvoices(newInvoices)
+        onFormSave(newInvoice)
         setFormOpen(false)
     }
 
-    const onTotalVariablesChange = () => {
-        console.log(items.reduce((total, item) => total + (parseInt(item.quantity) * parseFloat(item.price)), 0))
-        items.forEach((item) => {
-            console.log("parseInt(item.quantity)", parseInt(item.quantity))
-            console.log("parseFloat(item.total)", parseFloat(item.total))
-        })
-        setTotalState(items.reduce((total, item) => total +  parseFloat(item.total), 0))
+    const saveAsDraft = () => {
+        const status = "draft"
+        const newInvoice = {
+            ...formData,
+            clientAddress,
+            senderAddress,
+            status,
+            items,
+            total: totalState
+        }
+        const newInvoices = [...invoices, newInvoice]
+        setInvoices(newInvoices)
+        setFormOpen(false)
     }
 
-    console.log(items)
+    const btns = invoice === emptyInvoice ? (
+        // TODO add flex etc
+        <>
+            <Button type="edit" onClick={e => setFormOpen(false)}>
+                Discard
+            </Button>
+            <Button type="draft" onClick={saveAsDraft}>
+                Save as Draft
+            </Button>
+            <Button type="purple" onClick={addInvoice}>
+                Save & Send
+            </Button>
+        </>
+    ) : (
+        <>
+            <Button type="draft" onClick={e => setFormOpen(false)}>
+                Cancel
+            </Button>
+            <Button type="purple" onClick={saveChanges}>
+                Save Changes
+            </Button>
+        </>
+    )
+
+    const onTotalVariablesChange = () => setTotalState(items.reduce((total, item) => total +  parseFloat(item.total), 0))
 
     return ReactDOM.createPortal(
-    // return (
         <>
-            {/* Invoice Form */}
         <FormWrapper>
             <FormMainWrapper>
             <div>
@@ -235,13 +355,9 @@ const Form = ({invoice, setFormOpen}) => {
                         <input type="text" name="createdAt" value={formData.createdAt}
                          onChange={e => handleCAChange(e)} 
                          />
-                        {/* <label htmlFor="client-post-code">Post Code</label>
-                        <input type="text" name="postCode" value={clientAddress.postCode} onChange={e => handleCAChange(e)} /> */}
-                        {/* <label htmlFor="client-post-code">Post Code</label>
-                        <input type="text" name="postCode" value={clientAddress.postCode} onChange={e => handleCAChange(e)} /> */}
                         <label>
                             Payment Terms
-                            <select name="paymentDue" value={paymentDue} onChange={e => handlePaymentDueChange(e)}>
+                            <select name="paymentDue" value={formData.paymentTerms} onChange={e => handlePaymentDueChange(e)}>
                                 <option value="1">Net 1 day</option>
                                 <option value="7">Net 7 day</option>
                                 <option value="14">Net 14 day</option>
@@ -255,7 +371,6 @@ const Form = ({invoice, setFormOpen}) => {
                     </div>
                 </form>
             </div>
-            {/* Items Form */}
             <div>
 
                 <h3>Item List</h3>
@@ -265,35 +380,24 @@ const Form = ({invoice, setFormOpen}) => {
                         <Button className="formTrashBtn" onClick={() => deleteItem(item.id)}>
                             <img src={TrashIcon} alt="delete-icon" />
                         </Button>
-                        <div>
-                            <label htmlFor="">
-                                <input type="total" value={totalState} readOnly />
-                            </label>
-                        </div>
                     </div>
                 ))}
+            </div>
+            <div>
+                <label htmlFor="">
+                    <input type="total" value={totalState} readOnly />
+                </label>
             </div>
             <Button onClick={addItem} type="new-item">Add Item</Button>
             </FormMainWrapper>
             
             <FormButtonWrapper>
-                <Button type="draft" onClick={e => setFormOpen(false)}>
-                    Cancel
-                </Button>
-                <Button type="purple" onClick={saveInvoice}>
-                    Save Changes
-                </Button>
+                {btns}
             </FormButtonWrapper>
         </FormWrapper> 
         </>
         , document.getElementById("portal"))
 }
-    // if(false) return (
-        // <div>
-            
-        // </div>
-    // )
-// }
 
 const FormWrapper = styled.div ` 
     position: fixed;

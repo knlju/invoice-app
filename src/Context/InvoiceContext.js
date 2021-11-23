@@ -7,9 +7,12 @@ const invoiceDataLocal = JSON.parse(localStorage.getItem("invoices"))
 
 export function InvoiceProvider({ children }) {
 
-    const [ invoices, setInvoice ] = useState(invoiceDataLocal || invoiceMockData)
+    const [ invoices, setInvoices ] = useState(invoiceDataLocal || invoiceMockData)
 
     // TODO: add memo
+    const value = React.useMemo(() => ({
+        invoices, setInvoices
+    }), [invoices]);
 
     useEffect(() => {
         localStorage.setItem("invoices", JSON.stringify(invoices))
@@ -29,7 +32,7 @@ export function InvoiceProvider({ children }) {
     // }, [])
 
     return (
-        <InvoiceContext.Provider value={[invoices, setInvoice]}>
+        <InvoiceContext.Provider value={value}>
             {children}
         </InvoiceContext.Provider>
     )

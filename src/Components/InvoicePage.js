@@ -288,7 +288,7 @@ const InvoiceCont = styled.div `
     `
 export default function InvoicePage() {
     const { id } = useParams()
-    const [invoices, setInvoices] = useContext(InvoiceContext)
+    const {invoices, setInvoices} = useContext(InvoiceContext)
     const [invoice, setInvoice] = useState(null)
     const [modalOpen, setModalOpen] = useState(false)
     const [formOpen, setFormOpen] = useState(false)
@@ -315,12 +315,17 @@ export default function InvoicePage() {
         setInvoices(newInvoices)
     }
 
+    const onFormSave = newInvoice => {
+        setInvoice(newInvoice)
+        setFormOpen(false)
+    }
+
     const {status} = invoice || {};
 
     return (
             
         <InvoiceCont>
-            { formOpen && <Form invoice={invoice} setFormOpen={setFormOpen} /> }
+            { formOpen && <Form invoice={invoice} setFormOpen={setFormOpen} onFormSave={onFormSave} /> }
             <GoBackLink />
             <InvoiceHelperContainer>
 

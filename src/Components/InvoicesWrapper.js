@@ -7,6 +7,7 @@ import IconPlus from '../assets/icon-plus.svg'
 import styled from 'styled-components'
 import FilterArrow from '../assets/icon-arrow-down.svg'
 import IconCheck from '../assets/icon-check.svg'
+import Form from "./Form.jsx"
 
 
 const IconPlusCont = styled.div ` 
@@ -198,8 +199,11 @@ const NewInvoiceWrapper = styled.div `
 
 const InvoicesWrapper = props => {
     const [filters, setFilters] = useState([])
-    const [invoices, setInvoices] = useContext(InvoiceContext)
+    const {invoices, setInvoices} = useContext(InvoiceContext)
     const [showFilterModal, setShowFilterModal] = useState(false)
+    const [formOpen, setFormOpen] = useState(false)
+
+    const handleNewItemClick = () => setFormOpen(true)
 
     const handleFilterChange = filter => {
         const newFilters = [...filters]
@@ -231,6 +235,7 @@ const InvoicesWrapper = props => {
 
     return (
         <>
+            {formOpen && <Form setFormOpen={setFormOpen} />}
             <NewInvoiceWrapper>
             <NewInvoiceHeader>
                 <div>
@@ -268,7 +273,7 @@ const InvoicesWrapper = props => {
                         
                     </InvoicesFilterContainer>
                     <div>
-                        <NewInvoiceBtn type="purple">
+                        <NewInvoiceBtn type="purple" onClick={handleNewItemClick}>
                             <IconPlusCont />
                             New<span>Invoice</span> 
                         </NewInvoiceBtn>
