@@ -83,7 +83,6 @@ const Form = ({invoice, setFormOpen}) => {
         clientName: invoice.clientName,
         clientEmail: invoice.clientEmail,
         status: invoice.status,
-        total: invoice.total
     })
     const [ clientAddress, setClientAddress ] = useState({...invoice.clientAddress})
     const [ senderAddress, setSenderAddress ] = useState({...invoice.senderAddress})
@@ -151,7 +150,8 @@ const Form = ({invoice, setFormOpen}) => {
             ...formData,
             clientAddress,
             senderAddress,
-            items
+            items,
+            total: totalState
         }
         const newInvoices = invoices.map(inv => inv.id === formData.id ? newInvoice : inv)
         setInvoices(newInvoices)
