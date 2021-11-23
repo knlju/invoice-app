@@ -45,23 +45,23 @@ const getDateFromDifference = (date, difference) => {
 
 const emptyInvoice = {
     senderAddress: {
-        street: '',
-        city: '',
-        postCode: '',
-        country: ''
+        street: "",
+        city: "",
+        postCode: "",
+        country: ""
     },
-    clientName: '',
-    clientEmail: '',
+    clientName: "",
+    clientEmail: "",
     clientAddress: {
-        street: '',
-        city: '',
-        postCode: '',
-        country: ''
+        street: "",
+        city: "",
+        postCode: "",
+        country: ""
     },
     createdAt: new Date().toUTCString(),
-    paymentTerms: '30',
+    paymentTerms: "30",
     paymentDue: getDateFromDifference(new Date(), 30),
-    description: '',
+    description: "",
     status: "draft",
     items: [
         {
@@ -73,6 +73,25 @@ const emptyInvoice = {
         }
     ],
     total: 0
+}
+
+const newErrList = {
+    senderAddress: {
+        street: false,
+        city: false,
+        postCode: false,
+        country: false
+    },
+    clientName: false,
+    clientEmail: false,
+    clientAddress: {
+        street: false,
+        city: false,
+        postCode: false,
+        country: false
+    },
+    description: false,
+    items: []
 }
 
 // TODO finish
@@ -98,7 +117,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
     const [ items, setItems ] = useState(getInvoiceItemsMapped())
     const { invoices, setInvoices } = useContext(InvoiceContext)
     const [ totalState, setTotalState ] = useState(invoice.total)
-    const [ errList, setErrList ] = useState({senderAddress: {street: false}})
+    const [ errList, setErrList ] = useState({...newErrList, items: items.map(item => false)})
 
     useEffect(()=>{
         calculateTotal()
