@@ -15,22 +15,19 @@ const FormItem = ({name, quantity, price, total, setItemValue, onTotalVariablesC
         setItemValue(e)
         const totalEventMock = { target: { name: "total", value: (parseFloat(e.target.value) * quantityState) }}
         setItemValue(totalEventMock)
-        setTotalState(parseFloat(e.target.value) * quantityState)
     }
 
     const handleQuantityChange = e => {
         setQuantityState(parseInt(e.target.value))
         setItemValue(e)
-        setTotalState(priceState * parseInt(e.target.value))
         const totalEventMock = { target: {name: "total", value: (priceState * parseInt(e.target.value)) } }
         setItemValue(totalEventMock)
-        console.log(priceState)
-        console.log(quantityState)
     }
 
     useEffect(() => {
+        setTotalState(priceState * quantityState)
         onTotalVariablesChange()
-    }, [totalState])
+    }, [priceState, quantityState])
 
     // const calculateTotal = () => {
 
@@ -90,6 +87,10 @@ const Form = ({invoice, setFormOpen}) => {
     const [ paymentDue, setPaymentDue ] = useState(getDifferenceInDays(new Date(invoice.createdAt), new Date(invoice.paymentDue)))
     const [ invoices, setInvoices ] = useContext(InvoiceContext)
     const [ totalState, setTotalState ] = useState(invoice.total)
+
+    useEffect(()=>{
+        onTotalVariablesChange()
+    }, [items])
 
     const handleSAChange = e => {
         const { name, value } = e.target
