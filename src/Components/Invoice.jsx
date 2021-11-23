@@ -7,7 +7,7 @@ import ArrowRight from '../assets/icon-arrow-right.svg'
 
 const InvoiceSection = styled.section ` 
     padding: 24px;
-    background-color: #fff;
+    background-color: ${props => props.theme.color.invoiceItem.bg};
     box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.100397);
     border-radius: 8px;
     display: flex;
@@ -30,6 +30,10 @@ const InvoiceSection = styled.section `
 	@media screen and (min-width: 1024px) {
 		max-width: 730px;
 	}
+
+    .clientName {
+        color: ${props => props.theme.color.text.bodyB};
+    }
 `
 const IdWrapper = styled.div ` 
 	display: flex;
@@ -40,12 +44,17 @@ const IdWrapper = styled.div `
         margin-bottom: 0;
         order: -2;
     }
+
+    .hashId {
+        color: ${props => props.theme.color.text.formLabel};
+    }
 `
 const ClientId = styled.span ` 
     font-weight: 700;
     text-transform: uppercase;
 	margin-right: 110px;
-	color: #0C0E16;
+	/* color: #0C0E16; */
+    color: ${props => props.theme.color.text.heading};
 
     @media screen and (min-width: 768px) {
         margin: 0;
@@ -55,6 +64,7 @@ const PaymentDue = styled.span `
 	margin-right: 200px;
 	position: relative;
 	top: 14px;
+    color: ${props => props.theme.color.text.formLabel};
 
     @media screen and (min-width: 768px) {
         margin: 0;
@@ -69,7 +79,7 @@ const TotalDue = styled.span `
 	font-size: 16px;
 	line-height: 24px;
 	letter-spacing: -0.8px;
-	color: #0C0E16;
+	color: ${props => props.theme.color.text.heading};
 	align-self: flex-end;
 
     @media screen and (min-width: 768px) {
@@ -151,10 +161,10 @@ export default function Invoice({ id, total, status, clientName, paymentDue }) {
         <Link to={"invoices/" + id}>
             <InvoiceSection>
                 <IdWrapper>
-                    <span>#</span>
+                    <span className="hashId">#</span>
                     <ClientId>{id}</ClientId>
                 </IdWrapper>
-                <span>{clientName}</span>
+                <span className="clientName">{clientName}</span>
 
                 <PaymentDue>{paymentDue}</PaymentDue>
 				<TotalDue>£ {total}</TotalDue>

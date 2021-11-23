@@ -8,8 +8,7 @@ import { light, dark } from '../Components/Styles/Themes'
 import ThemeToggle from '../Components/ThemeToggle'
 
 const HeaderStyle = styled.header ` 
-    /* background-color: #373B53; */
-    background-color: ${props => props.theme.color.body.bg};
+    background-color: #373B53;
     height: 72px;
     display: flex;
     align-items: center;

@@ -12,8 +12,7 @@ import Form from './Form'
 // import { url } from 'inspector'
 
 const InvoiceCont = styled.div ` 
-        padding: 32px 0;
-         background-color: ${props => props.theme.color.body.bg};
+        padding: 32px 0 0;
 
         @media screen and (min-width: 768px) {
             padding: 48px 24px;
@@ -28,7 +27,7 @@ const InvoiceCont = styled.div `
     `
     const InvoiceMain = styled.div ` 
         padding: 24px;
-        background-color: #fff;
+        background-color: ${props => props.theme.color.invoiceItem.bg};
         border-radius: 8px;
 
         span {
@@ -44,11 +43,15 @@ const InvoiceCont = styled.div `
             flex-direction: row;
             justify-content: space-between;
         }
+        span {
+            color: ${props => props.theme.color.text.bodyA};
+        }
 
         div:first-child>h3 {
             display: flex;
             align-items: center;
             margin-bottom: 4px;
+            color: ${props => props.theme.color.text.heading};
         }
         div:first-child>h3>span {
             display: inline-block;
@@ -74,7 +77,12 @@ const InvoiceCont = styled.div `
             gap: 100px;
         }
     
-
+        h3 {
+            color: ${props => props.theme.color.text.heading};
+        }
+        span {
+            color: ${props => props.theme.color.text.bodyA};
+        }
         & > div:first-child {
             display: flex;
             gap: 40px;
@@ -103,7 +111,7 @@ const InvoiceCont = styled.div `
 
     const InvoiceTotal = styled.div ` 
         border-radius: 8px;
-        background-color: #F9FAFE;
+        background-color: ${props => props.theme.color.invoiceTable.bg};
         overflow: hidden;
     `
 
@@ -123,6 +131,7 @@ const InvoiceCont = styled.div `
 
         span {
             font-size: 11px;
+            color: ${props => props.theme.color.text.bodyA};
             @media screen and (min-width: 768px) {
                 text-align: right;
             }
@@ -152,12 +161,12 @@ const InvoiceCont = styled.div `
             font-size: 12px;
             line-height: 15px;
             letter-spacing: -0.25px;
-            color: #0C0E16;
+            color: ${props => props.theme.color.text.heading};
             margin-bottom: 6px;
         }
 
         &>span {
-            color: #0C0E16;
+            color: ${props => props.theme.color.text.heading};
             font-weight: 700;
             text-align: right;
         }
@@ -181,6 +190,7 @@ const InvoiceCont = styled.div `
 
         span {
             font-weight: 700;
+            color: ${props => props.theme.color.text.bodyA};
         }
 
         @media screen and (min-width: 768px) {
@@ -191,7 +201,7 @@ const InvoiceCont = styled.div `
 
     const InvoiceTotalFooter = styled.div ` 
         padding: 24px;
-        background-color: #373B53;
+        background-color: ${props => props.theme.color.invoiceTable.footerBg};
         color: #fff;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -201,14 +211,14 @@ const InvoiceCont = styled.div `
             text-align: right;
         }
         span {
-            color: #fff;
+            color: ${props => props.theme.color.text.bodyA};
             font-weight: 300;
         }
     `
 
     const ButtonsContainer = styled.div `  
     
-        background-color: #fff;
+        background-color: ${props => props.theme.color.invoiceItem.bg};
         padding: 20px 24px;
         display: flex;
         align-items: center;
@@ -258,12 +268,15 @@ const InvoiceCont = styled.div `
     `
     const StatusContainer = styled.div ` 
         padding: 24px;
-        /* background-color: #fff; */
-         background-color: ${props => props.theme.color.body.bg};
+        background-color: ${props => props.theme.color.invoiceItem.bg};
         display: flex;
         align-items: center;
         justify-content: space-between;
         border-radius: 8px;
+
+        &>span {
+            color: ${props => props.theme.color.text.bodyA};
+        }
 
         @media screen and (min-width: 768px) {
             gap: 16px;

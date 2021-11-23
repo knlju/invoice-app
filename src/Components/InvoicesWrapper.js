@@ -46,6 +46,13 @@ const NewInvoiceHeader = styled.div `
     /* padding: 0 24px; */
     margin: 32px auto 0 auto;
     width: 100%;
+
+    .newInvoiceTitle {
+        color: ${props => props.theme.color.text.heading};
+    }
+    .newInvoiceDesc {
+        color: ${props => props.theme.color.text.bodyA};
+    }
 `
 
 const NewInvoiceHeaderFilter = styled.div ` 
@@ -84,7 +91,7 @@ const InvoicesFilterContainer = styled.div `
 
         span {
             font-weight: 700;
-            color: #0C0E16;
+            color: ${props => props.theme.color.text.heading};
         }
         span:last-child {
             margin-left: 16px;
@@ -175,12 +182,12 @@ const InvoicesWrapper = props => {
             <NewInvoiceWrapper>
             <NewInvoiceHeader>
                 <div>
-                    <h2>Invoices</h2>
-                    <span> <InvoicesLengthMob> There are</InvoicesLengthMob> {invoices.length} invoices</span>
+                    <h2 className="newInvoiceTitle">Invoices</h2>
+                    <span className="newInvoiceDesc"> <InvoicesLengthMob> There are</InvoicesLengthMob> {invoices.length} invoices</span>
                 </div>
                 <NewInvoiceHeaderFilter>
                     <InvoicesFilterContainer>
-                        <div onClick={() => setShowFilterModal(!showFilterModal)}> <span>Filter </span> <InvoicesFilterMob> by status</InvoicesFilterMob>   <FilterArrowDown rotateArrow={showFilterModal}/> </div>
+                        <div onClick={() => setShowFilterModal(!showFilterModal)}> <span className="newInvoiceFilterDesc">Filter </span> <InvoicesFilterMob> by status</InvoicesFilterMob>   <FilterArrowDown rotateArrow={showFilterModal}/> </div>
                             {/* TO DO - CUSTOM CHECKBOX */}
                         {showFilterModal && <CheckboxModal>
                             <label htmlFor="draft">

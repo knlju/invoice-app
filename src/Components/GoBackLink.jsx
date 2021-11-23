@@ -18,7 +18,7 @@ export const GoBackLinkWrapper = styled.div`
     line-height: 15px;
     /* identical to box height, or 125% */
     letter-spacing: -0.25px;
-    color: #0C0E16;
+    color: ${props => props.theme.color.text.heading};
     gap: 24px;
     align-items: center;
     margin-left: 24px;

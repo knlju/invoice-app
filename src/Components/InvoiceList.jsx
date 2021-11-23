@@ -29,9 +29,10 @@ const NoInvoiceWrapper = styled.div `
     }
     h2 {
         margin-bottom: 20px;
+        color: ${props => props.theme.color.text.heading};
     }
     p {
-        color: #888EB0;
+         color: ${props => props.theme.color.text.bodyA};
         text-align: center;
     }
     p > span {

@@ -1,3 +1,5 @@
+import SunIcon from '../../assets/icon-sun.svg'
+import MoonIcon from '../../assets/icon-moon.svg'
 export const light = {
 	color: {
 		body: {
@@ -60,7 +62,7 @@ export const light = {
 		}
 	},
 	icon: {
-		path: 'src/assets/icon-moon.svg',
+		path: MoonIcon,
 		alt: 'moon icon'
 	}
 }
@@ -127,7 +129,7 @@ export const dark = {
 		}
 	},
 	icon: {
-		path: 'src/assets/icon-sun.svg',
+		path: SunIcon,
 		alt: 'sun icon'
 	}
 }

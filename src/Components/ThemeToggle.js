@@ -3,7 +3,6 @@ import styled, { ThemeContext } from 'styled-components'
 
 const Button = styled.button`
     border: none;
-    /* padding: .25rem; */
     background: transparent;
     cursor: pointer;
     outline: none;
