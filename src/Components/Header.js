@@ -60,30 +60,30 @@ const HeaderIcons = styled.div `
         flex-direction: column;
     }
 `
-const ButtonIcon = styled.button ` 
-    border: none;
-    outline: none;
-    background: transparent;
-    cursor: pointer;
-    outline: none;
-    position: relative;
+// const ButtonIcon = styled.button ` 
+//     border: none;
+//     outline: none;
+//     background: transparent;
+//     cursor: pointer;
+//     outline: none;
+//     position: relative;
     
-     &::after {
-        content: '';
-        position: absolute;
-        right: -24px;
-        top: -26px;
-        width: 1px;
-        background-color: #494E6E;
-        height: 72px;
-        @media screen and (min-width: 1024px) {
-            right: 10px;
-            top: 0;
-            transform: rotate(90deg);
-            height: 103px;
-        }
-    }
-`
+//      &::after {
+//         content: '';
+//         position: absolute;
+//         right: -24px;
+//         top: -26px;
+//         width: 1px;
+//         background-color: #494E6E;
+//         height: 72px;
+//         @media screen and (min-width: 1024px) {
+//             right: 10px;
+//             top: 0;
+//             transform: rotate(90deg);
+//             height: 103px;
+//         }
+//     }
+// `
 const AvatarImg = styled.img ` 
     content: url(${Avatar});
     border-radius: 50%;

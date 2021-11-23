@@ -6,6 +6,7 @@ import { Button } from './Styles/Components.style'
 import IconPlus from '../assets/icon-plus.svg'
 import styled from 'styled-components'
 import FilterArrow from '../assets/icon-arrow-down.svg'
+import IconCheck from '../assets/icon-check.svg'
 
 
 const IconPlusCont = styled.div ` 
@@ -61,13 +62,14 @@ const NewInvoiceHeaderFilter = styled.div `
     justify-content: space-between;
 `
 
-const InvoicesLengthMob = styled.span ` 
-    display: none;
-    @media screen and (min-width: 768px) { 
-        display: inline-block;
-    }
+// const InvoicesLengthMob = styled.span ` 
+//     display: none;
+//     color: ${props => props.theme.color.text.bodyA};
+//     @media screen and (min-width: 768px) { 
+//         display: inline-block;
+//     }
 
-`
+// `
 const InvoicesFilterMob = styled.span ` 
     display: none;
     @media screen and (min-width: 768px) { 
@@ -116,14 +118,14 @@ const CheckboxModal = styled.div `
     position: absolute;
     top: 25px;
     left: -105px;
-    background-color: #fff;
+    background-color: ${props => props.theme.color.dropdown.bg};
     border-radius: 8px;
     padding: 24px;
     width: 190px;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    box-shadow: 0px 10px 20px rgba(72, 84, 159, 0.25);
+    box-shadow: 0px 10px 20px ${props => props.theme.color.dropdown.shadow};
     z-index: 1;
 
     @media screen and (min-width: 1024px) {
@@ -145,6 +147,38 @@ const CheckboxModal = styled.div `
     input {
         position:relative;
         top: 2px;
+
+        display: none;
+
+        :hover + span {
+            border: 1px solid #7C5DFA;
+        }
+        :checked + span {
+            background: #7C5DFA;
+            > img {
+                opacity: 1;
+            }
+        }
+    }
+
+    span {
+        color: ${props => props.theme.color.text.heading};
+        font-weight: 700;
+        text-transform: capitalize;
+        margin-bottom: -1px;
+    }
+`
+const Checkbox = styled.span`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    background: ${props => props.theme.color.checkbox.bg};
+    img {
+        opacity: 0;
     }
 `
 const NewInvoiceWrapper = styled.div ` 
@@ -177,13 +211,31 @@ const InvoicesWrapper = props => {
         setFilters(newFilters)
     }
 
+    const invoicesMessage = (num, filters) => {
+    if (num === 0 && !filters) {
+        return 'There are no invoices.'
+    } else if (num === 0 && filters) {
+        return `There are no ${filters} invoices.`
+    } else if (num === 1 && !filters) {
+        return 'There is 1 invoice.'
+    } else if (num === 1 && filters) {
+        return `There is 1 ${filters} invoice.`
+    } else if (!filters) {
+        return `There are ${num} total invoices.`
+    } else {
+        return `There are ${num} ${filters} invoices.`
+    }
+    }
+    
+    const message = invoicesMessage(invoices && invoices.filter((item)=> filters.includes(item.status)).length, filters);
+
     return (
         <>
             <NewInvoiceWrapper>
             <NewInvoiceHeader>
                 <div>
                     <h2 className="newInvoiceTitle">Invoices</h2>
-                    <span className="newInvoiceDesc"> <InvoicesLengthMob> There are</InvoicesLengthMob> {invoices.length} invoices</span>
+                    <span className="newInvoiceDesc">{message}</span>
                 </div>
                 <NewInvoiceHeaderFilter>
                     <InvoicesFilterContainer>
@@ -191,13 +243,25 @@ const InvoicesWrapper = props => {
                             {/* TO DO - CUSTOM CHECKBOX */}
                         {showFilterModal && <CheckboxModal>
                             <label htmlFor="draft">
-                                <input type="checkbox" name="draft" id="draft" value={filters.includes("draft")} onChange={e => handleFilterChange("draft")} /> Draft
+                                <input type="checkbox" name="draft" id="draft" value={filters.includes("draft")} onChange={e => handleFilterChange("draft")} /> 
+                                <Checkbox className="checkbox">
+                                    <img src={IconCheck} alt="icon-check"/>
+                                </Checkbox>
+                                <span>Draft</span>
                             </label>
                             <label htmlFor="pending">
-                                <input type="checkbox" name="pending" id="pending" value={filters.includes("pending")} onChange={e => handleFilterChange("pending")} /> Pending
+                                <input type="checkbox" name="pending" id="pending" value={filters.includes("pending")} onChange={e => handleFilterChange("pending")} /> 
+                                <Checkbox className="checkbox">
+                                    <img src={IconCheck} alt="icon-check"/>
+                                </Checkbox>
+                                <span>Pending</span>
                             </label>
                             <label htmlFor="paid">
-                                <input type="checkbox" name="paid" id="paid" value={filters.includes("paid")} onChange={e => handleFilterChange("paid")} /> Paid 
+                                <input type="checkbox" name="paid" id="paid" value={filters.includes("paid")} onChange={e => handleFilterChange("paid")} /> 
+                                <Checkbox className="checkbox">
+                                    <img src={IconCheck} alt="icon-check"/>
+                                </Checkbox>
+                                <span>Paid</span> 
                             </label>
                         </CheckboxModal>}
 

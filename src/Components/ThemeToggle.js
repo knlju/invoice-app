@@ -17,7 +17,7 @@ const Button = styled.button`
         background-color: #494E6E;
         height: 72px;
         @media screen and (min-width: 1024px) {
-            right: 36px;
+            right: 10px;
             top: 0;
             transform: rotate(90deg);
             height: 103px;
