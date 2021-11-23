@@ -1,17 +1,50 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
+import ReactDOM from 'react-dom'
 import { Link } from 'react-router-dom'
-import { ReactDOM } from 'react'
 import { Button } from './Styles/Components.style'
 import { InvoiceContext } from '../Context/InvoiceContext'
 
-const FormItem = ({name, quantity, price, total, setItemValue}) => (
-    <>
-        <input type="text" name="name" value={name} onChange={setItemValue} />
-        <input type="text" name="quantity" value={quantity} onChange={setItemValue} />
-        <input type="text" name="price" value={price} onChange={setItemValue} />
-        <input type="text" name="total" value={total} onChange={setItemValue} />
-    </>
-)
+const FormItem = ({name, quantity, price, total, setItemValue, onTotalVariablesChange}) => {
+
+    const [ priceState, setPriceState ] = useState(price)
+    const [ totalState, setTotalState ] = useState(total)
+    const [ quantityState, setQuantityState ] = useState(quantity)
+
+    const handlePriceChange = e => {
+        setPriceState(parseFloat(e.target.value))
+        setItemValue(e)
+        const totalEventMock = { target: { name: "total", value: (parseFloat(e.target.value) * quantityState) }}
+        setItemValue(totalEventMock)
+        setTotalState(parseFloat(e.target.value) * quantityState)
+    }
+
+    const handleQuantityChange = e => {
+        setQuantityState(parseInt(e.target.value))
+        setItemValue(e)
+        setTotalState(priceState * parseInt(e.target.value))
+        const totalEventMock = { target: {name: "total", value: (priceState * parseInt(e.target.value)) } }
+        setItemValue(totalEventMock)
+        console.log(priceState)
+        console.log(quantityState)
+    }
+
+    useEffect(() => {
+        onTotalVariablesChange()
+    }, [totalState])
+
+    // const calculateTotal = () => {
+
+    // }
+
+    return (
+        <>
+            <input type="text" name="name" value={name} onChange={setItemValue} />
+            <input type="number" name="quantity" value={quantityState} onChange={handleQuantityChange} />
+            <input type="number" name="price" value={priceState} onChange={handlePriceChange} />
+            <input type="number" name="total" value={totalState} readOnly />
+        </>
+    )
+}
 
 const getId = (function () {
     let count = 0
@@ -21,7 +54,7 @@ const getId = (function () {
 })()
 
 // TODO finish
-const Form = ({invoice}) => {
+const Form = ({invoice, setFormOpen}) => {
     const getInvoiceItemsMapped = () => {
         const invoiceCopy = {...invoice}
         invoiceCopy.items = invoiceCopy.items.map(item => {return {...item, id: getId()}})
@@ -57,6 +90,7 @@ const Form = ({invoice}) => {
     const [ items, setItems ] = useState(getInvoiceItemsMapped())
     const [ paymentDue, setPaymentDue ] = useState(getDifferenceInDays(new Date(invoice.createdAt), new Date(invoice.paymentDue)))
     const [ invoices, setInvoices ] = useContext(InvoiceContext)
+    const [ totalState, setTotalState ] = useState(invoice.total)
 
     const handleSAChange = e => {
         const { name, value } = e.target
@@ -121,11 +155,22 @@ const Form = ({invoice}) => {
         }
         const newInvoices = invoices.map(inv => inv.id === formData.id ? newInvoice : inv)
         setInvoices(newInvoices)
+        setFormOpen(false)
     }
 
-    // return ReactDOM.createPortal(
-    // console.log(items)
-    return (
+    const onTotalVariablesChange = () => {
+        console.log(items.reduce((total, item) => total + (parseInt(item.quantity) * parseFloat(item.price)), 0))
+        items.forEach((item) => {
+            console.log("parseInt(item.quantity)", parseInt(item.quantity))
+            console.log("parseFloat(item.total)", parseFloat(item.total))
+        })
+        setTotalState(items.reduce((total, item) => total +  parseFloat(item.total), 0))
+    }
+
+    console.log(items)
+
+    return ReactDOM.createPortal(
+    // return (
         <>
             {/* Invoice Form */}
             <div>
@@ -193,7 +238,7 @@ const Form = ({invoice}) => {
             <div>
                 {items && items.map(item => (
                     <div key={item.id}>
-                        <FormItem key={item.id} {...item} setItemValue={e => setItemValue(e, item.id)} />
+                        <FormItem key={item.id} {...item} setItemValue={e => setItemValue(e, item.id)} onTotalVariablesChange={onTotalVariablesChange} />
                         <Button type="delete" onClick={() => deleteItem(item.id)}>delete item</Button>
                     </div>
                 ))}
@@ -201,19 +246,19 @@ const Form = ({invoice}) => {
             <Button onClick={addItem} type="new-item">Add Item</Button>
             <div>
                 <label htmlFor="">
-                    <input type="total" value={formData.total} readOnly />
+                    <input type="total" value={totalState} readOnly />
                 </label>
             </div>
             <div>
-                <Button onClick={e => console.log("zatvori modal")}>
+                <Button onClick={e => setFormOpen(false)}>
                     Cancel
                 </Button>
                 <Button onClick={saveInvoice}>
                     Save Changes
                 </Button>
             </div>
-        </>)
-        // , document.getElementById("portal"))
+        </>
+        , document.getElementById("portal"))
 }
     // if(false) return (
         // <div>

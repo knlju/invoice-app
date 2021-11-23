@@ -293,8 +293,10 @@ export default function InvoicePage() {
     const [modalOpen, setModalOpen] = useState(false)
     const [formOpen, setFormOpen] = useState(false)
 
+    const findInvoice = id => invoices.find(inv => inv.id === id)
+
     useEffect(() => {
-        const foundInv = invoices.find(inv => inv.id === id)
+        const foundInv = findInvoice(id)
         // // TODO mock ucitavanja, obrisati kasnije
         // setTimeout(() => setInvoice(foundInv), 2000)
         setInvoice(foundInv)
@@ -318,7 +320,7 @@ export default function InvoicePage() {
     return (
             
         <InvoiceCont>
-            { formOpen && <Form invoice={invoice} /> }
+            { formOpen && <Form invoice={invoice} setFormOpen={setFormOpen} /> }
             <GoBackLink />
             <InvoiceHelperContainer>
 

@@ -9,6 +9,8 @@ export function InvoiceProvider({ children }) {
 
     const [ invoices, setInvoice ] = useState(invoiceDataLocal || invoiceMockData)
 
+    // TODO: add memo
+
     useEffect(() => {
         localStorage.setItem("invoices", JSON.stringify(invoices))
         document.title = `Invoices (${invoices.length})`
