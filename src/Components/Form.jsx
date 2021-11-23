@@ -6,41 +6,26 @@ import { Button } from './Styles/Components.style'
 import { InvoiceContext } from '../Context/InvoiceContext'
 import TrashIcon from '../assets/icon-delete.svg'
 
-const FormItem = ({name, quantity, price, total, setItemValue, onTotalVariablesChange}) => {
-
-    const [ priceState, setPriceState ] = useState(price)
-    const [ totalState, setTotalState ] = useState(total)
-    const [ quantityState, setQuantityState ] = useState(quantity)
+const FormItem = ({id, name, quantity, price, total, setItemValue}) => {
 
     const handlePriceChange = e => {
-        setPriceState(parseFloat(e.target.value))
-        setItemValue(e)
-        const totalEventMock = { target: { name: "total", value: (parseFloat(e.target.value) * quantityState) }}
-        setItemValue(totalEventMock)
+        const { name, value } = e.target
+        setItemValue(name, value, id)
+        setItemValue("total", parseFloat(e.target.value) * quantity, id)
     }
 
     const handleQuantityChange = e => {
-        setQuantityState(parseInt(e.target.value))
-        setItemValue(e)
-        const totalEventMock = { target: {name: "total", value: (priceState * parseInt(e.target.value)) } }
-        setItemValue(totalEventMock)
+        const { name, value } = e.target
+        setItemValue(name, value, id)
+        setItemValue("total", price * parseInt(value), id)
     }
-
-    useEffect(() => {
-        setTotalState(priceState * quantityState)
-        onTotalVariablesChange()
-    }, [priceState, quantityState])
-
-    // const calculateTotal = () => {
-
-    // }
 
     return (
         <>
             <input type="text" name="name" value={name} onChange={setItemValue} />
-            <input type="number" name="quantity" value={quantityState} onChange={handleQuantityChange} />
-            <input type="number" name="price" value={priceState} onChange={handlePriceChange} />
-            <input type="number" name="total" value={totalState} readOnly />
+            <input type="number" name="quantity" value={quantity} onChange={handleQuantityChange} />
+            <input type="number" name="price" value={price} onChange={handlePriceChange} />
+            <input type="number" name="total" value={total} readOnly />
         </>
     )
 }
@@ -51,10 +36,6 @@ const getId = (function () {
         return count++;
     }
 })()
-
-// quick maths
-
-const getDifferenceInDays = (date1, date2) => Math.abs(parseInt((date1 - date2) / (1000 * 60 * 60 * 24), 10))
 
 const getDateFromDifference = (date, difference) => {
     const newDate = new Date(date)
@@ -120,7 +101,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
     const [ errList, setErrList ] = useState({senderAddress: {street: false}})
 
     useEffect(()=>{
-        onTotalVariablesChange()
+        calculateTotal()
     }, [items])
 
     const handleSAChange = e => {
@@ -148,8 +129,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
         }})
     }
 
-    const setItemValue = (e, id) => {
-        const { name, value } = e.target
+    const setItemValue = (name, value, id) => {
         setItems(prevItems => {
             const newItems = prevItems.map(item => {
                 if(item.id === id) return {...item, [name]: value}
@@ -176,6 +156,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
     }
 
     const validateForm = () => {
+        // TODO good luck
         let isValid = true
         if(senderAddress.street.trim() === "") {
             isValid = false
@@ -190,36 +171,6 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
             })
         }
         return isValid
-        // errorList.senderAddress.street
-        // senderAddress: {
-        //     street: '',
-        //     city: '',
-        //     postCode: '',
-        //     country: ''
-        // },
-        // clientName: '',
-        // clientEmail: '',
-        // clientAddress: {
-        //     street: '',
-        //     city: '',
-        //     postCode: '',
-        //     country: ''
-        // },
-        // createdAt: new Date().toUTCString(),
-        // paymentTerms: '30',
-        // paymentDue: getDateFromDifference(new Date(), 30),
-        // description: '',
-        // status: "draft",
-        // items: [
-        //     {
-        //         name: "New Item", 
-        //         quantity: 0, 
-        //         price: 0, 
-        //         total: 0, 
-        //         id: getId()
-        //     }
-        // ],
-        // total: 0
     }
 
     const addInvoice = () => {
@@ -292,7 +243,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
         </>
     )
 
-    const onTotalVariablesChange = () => setTotalState(items.reduce((total, item) => total +  parseFloat(item.total), 0))
+    const calculateTotal = () => setTotalState(items.reduce((total, item) => total +  parseFloat(item.total), 0))
 
     return ReactDOM.createPortal(
         <>
@@ -376,7 +327,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
                 <h3>Item List</h3>
                 {items && items.map(item => (
                     <div className="formAddNewItem" key={item.id}>
-                        <FormItem key={item.id} {...item} setItemValue={e => setItemValue(e, item.id)} onTotalVariablesChange={onTotalVariablesChange} />
+                        <FormItem key={item.id} {...item} setItemValue={setItemValue} />
                         <Button className="formTrashBtn" onClick={() => deleteItem(item.id)}>
                             <img src={TrashIcon} alt="delete-icon" />
                         </Button>
