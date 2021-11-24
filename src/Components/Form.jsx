@@ -490,7 +490,9 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
                             <label htmlFor="client-city">Invoice Date</label>
                             <input type="date" name="createdAt" value={formData.createdAt} {...dateProps} />
                         </InputWrapper>
-                        <Select label="Payment Terms" name="paymentTerms" options={dropdownOptions} value={formData.paymentTerms} onChange={e => handlePaymentDueChange(e)} />
+                        <InputWrapper>
+                            <Select label="Payment Terms" name="paymentTerms" options={dropdownOptions} value={formData.paymentTerms} onChange={e => handlePaymentDueChange(e)} />
+                        </InputWrapper>
                     </div>
                     <div>
                         <InputWrapper valid={errList.description}>
@@ -633,6 +635,7 @@ const FormMainWrapper = styled.div `
     }    
     .FormAddNewItem {
         width: 100%;
+        margin-bottom: 32px;
     }
     /* .formBillPlaceCityPost > * {
         flex: 1;
@@ -688,7 +691,11 @@ const InputWrapper = styled.span`
         display: inline-block;
         visibility: ${props => !props.valid ? 'hidden' : 'visible'};
         color: #EC5757;
-        margin-bottom: 9px;
+        font-weight: 500;
+        position: relative;
+        top: 4px;
+        font-size: 10px;
+        line-height: 15px;
         float: right;
     }
 `
