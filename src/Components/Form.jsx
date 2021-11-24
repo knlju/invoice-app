@@ -9,7 +9,7 @@ import Select from '../Components/Select.style'
 
 // import ScrollLock from 'react-scrolllock'
 
-const FormItem = ({id, name, quantity, price, total, setItemValue}) => {
+const FormItem = ({id, name, quantity, price, total, setItemValue, deleteItem}) => {
 
     const handlePriceChange = e => {
         const { name, value } = e.target
@@ -25,13 +25,75 @@ const FormItem = ({id, name, quantity, price, total, setItemValue}) => {
 
     return (
         <>
-            <input type="text" name="name" value={name} onChange={setItemValue} />
-            <input type="number" name="quantity" value={quantity} onChange={handleQuantityChange} />
-            <input type="number" name="price" value={price} onChange={handlePriceChange} />
-            <input type="number" name="total" value={total} readOnly />
+        <FormNewItemWrapper>
+            <div className="formNewItemName">
+                <label htmlFor="name">Item name</label>
+                <input type="text" name="name" value={name} onChange={setItemValue} />
+            </div>
+            <div className="formNewItemQPT">
+                <div>
+                    <label htmlFor="quantity">Qty.</label>
+                    <input type="number" name="quantity" value={quantity} onChange={handleQuantityChange} />
+                </div>
+                <div>
+                    <label htmlFor="price">Price</label>
+                    <input type="number" name="price" value={price} onChange={handlePriceChange} />
+                </div>
+                <div>
+                    <label htmlFor="total">Total</label>
+                    {/* <input type="number" name="total" value={total} readOnly /> */}
+                    <h3>{total}</h3>
+                </div>
+                <Button className="formTrashBtn" onClick={() => deleteItem(id)}>
+                        <img src={TrashIcon} alt="delete-icon" />
+                </Button>
+            </div>
+        </FormNewItemWrapper>
         </>
     )
 }
+
+const FormNewItemWrapper = styled.div `
+    display: flex;
+    flex-wrap: wrap;
+
+    @media screen and (min-width: 768px) {
+        flex-wrap: nowrap;
+    }
+
+    .formNewItemName {
+        width: 100%;
+        @media screen and (min-width: 768px) {
+            width: auto;
+            margin-right: 16px;
+        }
+    }
+    input[type=text] {
+        width: 100%;
+    }
+    .formNewItemQPT {
+        display: grid;
+        grid-template-columns: 0.5fr 1fr 1fr 0.5fr;
+        gap: 16px;
+
+        h3 {
+            font-weight: bold;
+            font-size: 12px;
+            line-height: 15px;
+            letter-spacing: -0.25px;
+            color: #888eb0;
+            margin-top: 26px;
+        }
+    }
+    .formTrashBtn {
+        background: transparent;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+`
 
 const getId = (function () {
     let count = 0
@@ -316,7 +378,6 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
                             </div>
                             <div>
                                 <label htmlFor="client-post-code">Post Code</label>
-                                {/* <span>Can't be empty</span> */}
                                 <input type="text" name="postCode" value={clientAddress.postCode} onChange={e => handleCAChange(e)} />
                             </div>
                         </div>
@@ -330,7 +391,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
                         <input type="date" name="createdAt" value={formData.createdAt}
                          onChange={e => handleCAChange(e)} 
                          />
-                        <label>
+                        {/* <label>
                             Payment Terms
                             <select name="paymentDue" value={formData.paymentTerms} onChange={e => handlePaymentDueChange(e)}>
                                 <option value="1">Net 1 day</option>
@@ -338,7 +399,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
                                 <option value="14">Net 14 day</option>
                                 <option value="30">Net 30 day</option>
                             </select>
-                        </label>
+                        </label> */}
 
 
                          <Select label="Payment Terms" name="paymentTerms" options={dropdownOptions}/>
@@ -355,11 +416,11 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
 
                 <h3>Item List</h3>
                 {items && items.map(item => (
-                    <div className="formAddNewItem" key={item.id}>
-                        <FormItem key={item.id} {...item} setItemValue={setItemValue} />
-                        <Button className="formTrashBtn" onClick={() => deleteItem(item.id)}>
+                    <div key={item.id}>
+                        <FormItem key={item.id} {...item} deleteItem={deleteItem} setItemValue={setItemValue} />
+                        {/* <Button className="formTrashBtn" onClick={() => deleteItem(item.id)}>
                             <img src={TrashIcon} alt="delete-icon" />
-                        </Button>
+                        </Button> */}
                     </div>
                 ))}
             </div>
@@ -368,7 +429,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
                     <input type="total" value={totalState} readOnly />
                 </label>
             </div>
-            <Button onClick={addItem} type="new-item">Add Item</Button>
+            <Button className="FormAddNewItem"onClick={addItem} type="new-item">Add Item</Button>
             </FormMainWrapper>
             
             <FormButtonWrapper>
@@ -389,6 +450,7 @@ const FormBackgroundOverlay = styled.div `
     width: 100%;
     height: 100vh;
     z-index: 4;
+    transition: all 0.3s ease;
     background: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5));
 
 `
@@ -402,16 +464,22 @@ const FormWrapper = styled.div `
     bottom: 0;
     background-color: ${props => props.theme.color.form.bg};
     z-index: 5;
-    overflow: auto;
+    /* overflow: auto; */
     
     @media screen and (min-width: 768px) {
             max-width: 616px;
             right: auto;
+    }
+    @media screen and (min-width: 1024px) {
+            max-width: 719px;
             top: 0;
-        }
+    }
 
 `
 const FormButtonWrapper = styled.div ` 
+    position: fixed;
+    bottom: 0;
+    left: 0;
     width: 100%;
     display: flex;
     align-items: center;
@@ -419,11 +487,24 @@ const FormButtonWrapper = styled.div `
     padding: 21px 24px;
     gap: 8px;
     background-color: ${props => props.theme.color.invoiceItem.bg};
+
+    @media screen and (min-width: 768px) {
+            max-width: 616px;
+            right: auto;
+    }
+    @media screen and (min-width: 1024px) {
+            max-width: 719px;
+            /* top: 0; */
+    }
 `
 
 const FormMainWrapper = styled.div ` 
-    padding: 32px 24px 0;
-    /* overflow: scroll; */
+    padding: 32px 24px 180px;
+    overflow: auto;
+    height: 100%;
+    @media screen and (min-width: 1024px) {
+        padding: 32px 24px 90px 136px;
+    }
 
     h2 {
         color: ${props => props.theme.color.text.heading}; 
@@ -497,13 +578,9 @@ const FormMainWrapper = styled.div `
             flex: 1;
         } */
     }
-    .formTrashBtn {
-        background: transparent;
-    }
-    .formAddNewItem {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+    
+    .FormAddNewItem {
+        width: 100%;
     }
 `
 

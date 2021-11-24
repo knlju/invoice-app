@@ -13,6 +13,7 @@ const HeaderStyle = styled.header `
     display: flex;
     align-items: center;
     justify-content: space-between;
+    z-index: 10;
     
     @media screen and (min-width: 1024px) {
         flex: 0 0 103px;
