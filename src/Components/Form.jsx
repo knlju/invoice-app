@@ -7,8 +7,6 @@ import { InvoiceContext } from '../Context/InvoiceContext'
 import TrashIcon from '../assets/icon-delete.svg'
 import Select from '../Components/Select.style'
 
-// import ScrollLock from 'react-scrolllock'
-
 const FormItem = ({id, name, quantity, price, total, setItemValue, deleteItem}) => {
 
     const handlePriceChange = e => {
@@ -688,6 +686,14 @@ export const InputWrapper = styled.span`
         letter-spacing: -0.25px;
         display: inline-block;
         margin-bottom: 10px;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type=number] {
+        -moz-appearance: textfield;
     }
     input {
         width: 100%;
