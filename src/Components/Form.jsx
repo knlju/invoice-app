@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom'
 import { Button } from './Styles/Components.style'
 import { InvoiceContext } from '../Context/InvoiceContext'
 import TrashIcon from '../assets/icon-delete.svg'
+import Select from '../Components/Select.style'
+
+// import ScrollLock from 'react-scrolllock'
 
 const FormItem = ({id, name, quantity, price, total, setItemValue}) => {
 
@@ -266,6 +269,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
 
     return ReactDOM.createPortal(
         <>
+        <FormBackgroundOverlay>
         <FormWrapper>
             <FormMainWrapper>
             <div>
@@ -312,6 +316,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
                             </div>
                             <div>
                                 <label htmlFor="client-post-code">Post Code</label>
+                                {/* <span>Can't be empty</span> */}
                                 <input type="text" name="postCode" value={clientAddress.postCode} onChange={e => handleCAChange(e)} />
                             </div>
                         </div>
@@ -322,7 +327,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
                     </div>
                     <div>
                         <label htmlFor="client-city">Invoice Date</label>
-                        <input type="text" name="createdAt" value={formData.createdAt}
+                        <input type="date" name="createdAt" value={formData.createdAt}
                          onChange={e => handleCAChange(e)} 
                          />
                         <label>
@@ -334,6 +339,11 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
                                 <option value="30">Net 30 day</option>
                             </select>
                         </label>
+
+
+                         <Select label="Payment Terms" name="paymentTerms" options={dropdownOptions}/>
+
+
                     </div>
                     <div>
                         <label htmlFor="client-city">Project Description</label>
@@ -365,24 +375,39 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
                 {btns}
             </FormButtonWrapper>
         </FormWrapper> 
+        </FormBackgroundOverlay>
         </>
         , document.getElementById("portal"))
 }
+const FormBackgroundOverlay = styled.div `
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    z-index: 4;
+    background: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5));
 
+`
 const FormWrapper = styled.div ` 
     position: fixed;
     min-height: 100vh;
     width: 100%;
-    top: 0;
+    top: 72px;
     right: 0;
     left: 0;
     bottom: 0;
     background-color: ${props => props.theme.color.form.bg};
     z-index: 5;
     overflow: auto;
+    
     @media screen and (min-width: 768px) {
             max-width: 616px;
             right: auto;
+            top: 0;
         }
 
 `
@@ -398,6 +423,7 @@ const FormButtonWrapper = styled.div `
 
 const FormMainWrapper = styled.div ` 
     padding: 32px 24px 0;
+    /* overflow: scroll; */
 
     h2 {
         color: ${props => props.theme.color.text.heading}; 
@@ -480,5 +506,12 @@ const FormMainWrapper = styled.div `
         justify-content: space-between;
     }
 `
+
+const dropdownOptions = [
+    {name: 'Net 1 Day', value: 1},
+    {name: 'Net 7 Days', value: 7},
+    {name: 'Net 14 Days', value: 14},
+    {name: 'Net 30 Days', value: 30}
+]
 
 export default Form
