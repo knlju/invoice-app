@@ -10,6 +10,10 @@ import ThemeToggle from '../Components/ThemeToggle'
 const HeaderStyle = styled.header ` 
     background-color: #373B53;
     height: 72px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -20,6 +24,8 @@ const HeaderStyle = styled.header `
         height: auto;
         flex-direction: column;
         border-radius: 0 20px 20px 0;
+        right: auto;
+        position: static;
     }
 `
 const HeaderLogo = styled.div ` 

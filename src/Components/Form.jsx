@@ -74,6 +74,7 @@ const FormNewItemWrapper = styled.div `
         @media screen and (min-width: 768px) {
             width: auto;
             margin-right: 16px;
+            min-width: 214px;
         }
     }
     input[type=text] {
@@ -402,128 +403,132 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
         <FormBackgroundOverlay>
         <FormWrapper>
             <FormMainWrapper>
-            <div>
-                {/* TODO */}
-                <div onClick={() => setFormOpen(false)}>
+            <div className="formMainWrapperHeader">
+                <Link to="/">
                     <div>{"<"} Go back</div>
+                </Link>
+                <h2>{ invoice.id ? `Edit ${invoice.id}` : "New Invoice" }</h2>
+            </div>
+            <div className="wrapperProba">
+                <div>
+                    <form action="">
+                        <h4>Bill From</h4>
+                        <div>
+                            <InputWrapper valid={errList.senderAddress.street}>
+                                <label htmlFor="street-address-from">Street Address</label>
+                                <span>can't be empty</span>
+                                <input type="text" value={senderAddress.street} onBlur={e => validateSAField(e)} onChange={e => handleSAChange(e)} name="street" id="street-address-from" />
+                            </InputWrapper>
+                        </div>
+                        <div className="formBillPlace">
+                            <div className="formBillPlaceCityPost">
+                                <div>
+                                    <InputWrapper valid={errList.senderAddress.city}>
+                                        <label htmlFor="city">City</label>
+                                        <span>can't be empty</span>
+                                        <input type="text" name="city" value={senderAddress.city} onBlur={e => validateSAField(e)} onChange={e => handleSAChange(e)} />
+                                    </InputWrapper>
+                                </div>
+                                <div>
+                                    <InputWrapper valid={errList.senderAddress.postCode}>
+                                        <label htmlFor="post-code">Post Code</label>
+                                        <span>can't be empty</span>
+                                        <input type="text" name="postCode" value={senderAddress.postCode} onBlur={e => validateSAField(e)} onChange={e => handleSAChange(e)} />
+                                    </InputWrapper>
+                                </div>
+                            </div>
+                            <div>
+                                <InputWrapper valid={errList.senderAddress.country}>
+                                    <label htmlFor="country">Country</label>
+                                    <span>can't be empty</span>
+                                    <input type="text" name="country" value={senderAddress.country} onBlur={e => validateSAField(e)} onChange={e => handleSAChange(e)}  />
+                                </InputWrapper>
+                            </div>
+                        </div>
+                        <h4>Bill To</h4>
+                        <div>
+                            <InputWrapper valid={errList.clientName}>
+                                <label htmlFor="clietns-name">Client’s Name</label>
+                                <span>can't be empty</span>
+                                <input type="text" name="clientName" value={formData.clientName} onBlur={e => validateFormField(e)} onChange={e => handleFormDataChange(e)} />
+                            </InputWrapper>
+                            <InputWrapper valid={errList.clientEmail}>
+                                <label htmlFor="client-email">Client’s Email</label>
+                                <span>can't be empty</span>
+                                <input type="text" name="clientEmail" value={formData.clientEmail} onBlur={e => validateFormField(e)} onChange={e => handleFormDataChange(e)} />
+                            </InputWrapper>
+                            <InputWrapper valid={errList.clientAddress.street}>
+                                <label htmlFor="street-address">Street Address</label>
+                                <span>can't be empty</span>
+                                <input type="text" name="street" value={clientAddress.street} onBlur={e => validateCAField(e)} onChange={e => handleCAChange(e)} />
+                            </InputWrapper>
+                        </div>
+                        <div className="formBillPlace">
+                            <div className="formBillPlaceCityPost">
+                                <div>
+                                    <InputWrapper valid={errList.clientAddress.city}>
+                                        <label htmlFor="client-city">City</label>
+                                        <span>can't be empty</span>
+                                        <input type="text" name="city" value={clientAddress.city} onBlur={e => validateCAField(e)} onChange={e => handleCAChange(e)} />
+                                    </InputWrapper>
+                                </div>
+                                <div>
+                                    <InputWrapper valid={errList.clientAddress.postCode}>
+                                        <label htmlFor="client-post-code">Post Code</label>
+                                        <span>can't be empty</span>
+                                        <input type="text" name="postCode" value={clientAddress.postCode} onBlur={e => validateCAField(e)} onChange={e => handleCAChange(e)} />
+                                    </InputWrapper>
+                                </div>
+                            </div>
+                            <div>
+                                <InputWrapper valid={errList.clientAddress.country}>
+                                    <label htmlFor="country">Country</label>
+                                    <span>can't be empty</span>
+                                    <input type="text" name="country" value={clientAddress.country} onBlur={e => validateCAField(e)} onChange={e => handleCAChange(e)} />
+                                </InputWrapper>
+                            </div>
+                        </div>
+                        <div>
+                            <InputWrapper>
+                                <label htmlFor="createdAt">Invoice Date</label>
+                                <input type="date" name="createdAt" value={formData.createdAt} {...dateProps} />
+                            </InputWrapper>
+                            <InputWrapper>
+                                <Select label="Payment Terms" name="paymentTerms" options={dropdownOptions} value={formData.paymentTerms} onChange={e => handlePaymentDueChange(e)} />
+                            </InputWrapper>
+                        </div>
+                        <div>
+                            <InputWrapper valid={errList.description}>
+                                <label htmlFor="client-city">Project Description</label>
+                                <span>can't be empty</span>
+                                <input type="text" name="description" value={formData.description} onBlur={e => validateFormField(e)} onChange={e => handleFormDataChange(e)} />
+                            </InputWrapper>
+                        </div>
+                    </form>
                 </div>
-                <h2>{ invoice.id ? `Edit #${invoice.id}` : "New Invoice" }</h2>
-                <form action="">
-                    <h4>Bill From</h4>
-                    <div>
-                        <InputWrapper valid={errList.senderAddress.street}>
-                            <label htmlFor="street-address-from">Street Address</label>
-                            <span>can't be empty</span>
-                            <input type="text" value={senderAddress.street} onBlur={e => validateSAField(e)} onChange={e => handleSAChange(e)} name="street" id="street-address-from" />
-                        </InputWrapper>
-                    </div>
-                    <div className="formBillPlace">
-                        <div className="formBillPlaceCityPost">
-                            <div>
-                                <InputWrapper valid={errList.senderAddress.city}>
-                                    <label htmlFor="city">City</label>
-                                    <span>can't be empty</span>
-                                    <input type="text" name="city" value={senderAddress.city} onBlur={e => validateSAField(e)} onChange={e => handleSAChange(e)} />
-                                </InputWrapper>
-                            </div>
-                            <div>
-                                <InputWrapper valid={errList.senderAddress.postCode}>
-                                    <label htmlFor="post-code">Post Code</label>
-                                    <span>can't be empty</span>
-                                    <input type="text" name="postCode" value={senderAddress.postCode} onBlur={e => validateSAField(e)} onChange={e => handleSAChange(e)} />
-                                </InputWrapper>
-                            </div>
+                <div>
+                    <h3>Item List</h3>
+                    {items && items.map(item => (
+                        <div key={item.id}>
+                            <FormItem key={item.id} {...item} deleteItem={deleteItem} setItemValue={setItemValue} />
                         </div>
-                        <div>
-                            <InputWrapper valid={errList.senderAddress.country}>
-                                <label htmlFor="country">Country</label>
-                                <span>can't be empty</span>
-                                <input type="text" name="country" value={senderAddress.country} onBlur={e => validateSAField(e)} onChange={e => handleSAChange(e)}  />
-                            </InputWrapper>
-                        </div>
-                    </div>
-                    <h4>Bill To</h4>
-                    <div>
-                        <InputWrapper valid={errList.clientName}>
-                            <label htmlFor="clietns-name">Client’s Name</label>
-                            <span>can't be empty</span>
-                            <input type="text" name="clientName" value={formData.clientName} onBlur={e => validateFormField(e)} onChange={e => handleFormDataChange(e)} />
-                        </InputWrapper>
-                        <InputWrapper valid={errList.clientEmail}>
-                            <label htmlFor="client-email">Client’s Email</label>
-                            <span>can't be empty</span>
-                            <input type="text" name="clientEmail" value={formData.clientEmail} onBlur={e => validateFormField(e)} onChange={e => handleFormDataChange(e)} />
-                        </InputWrapper>
-                        <InputWrapper valid={errList.clientAddress.street}>
-                            <label htmlFor="street-address">Street Address</label>
-                            <span>can't be empty</span>
-                            <input type="text" name="street" value={clientAddress.street} onBlur={e => validateCAField(e)} onChange={e => handleCAChange(e)} />
-                        </InputWrapper>
-                    </div>
-                    <div className="formBillPlace">
-                        <div className="formBillPlaceCityPost">
-                            <div>
-                                <InputWrapper valid={errList.clientAddress.city}>
-                                    <label htmlFor="client-city">City</label>
-                                    <span>can't be empty</span>
-                                    <input type="text" name="city" value={clientAddress.city} onBlur={e => validateCAField(e)} onChange={e => handleCAChange(e)} />
-                                </InputWrapper>
-                            </div>
-                            <div>
-                                <InputWrapper valid={errList.clientAddress.postCode}>
-                                    <label htmlFor="client-post-code">Post Code</label>
-                                    <span>can't be empty</span>
-                                    <input type="text" name="postCode" value={clientAddress.postCode} onBlur={e => validateCAField(e)} onChange={e => handleCAChange(e)} />
-                                </InputWrapper>
-                            </div>
-                        </div>
-                        <div>
-                            <InputWrapper valid={errList.clientAddress.country}>
-                                <label htmlFor="country">Country</label>
-                                <span>can't be empty</span>
-                                <input type="text" name="country" value={clientAddress.country} onBlur={e => validateCAField(e)} onChange={e => handleCAChange(e)} />
-                            </InputWrapper>
-                        </div>
-                    </div>
-                    <div>
-                        <InputWrapper>
-                            <label htmlFor="client-city">Invoice Date</label>
-                            <input type="date" name="createdAt" value={formData.createdAt} {...dateProps} />
-                        </InputWrapper>
-                        <InputWrapper>
-                            <Select label="Payment Terms" name="paymentTerms" options={dropdownOptions} value={formData.paymentTerms} onChange={e => handlePaymentDueChange(e)} />
-                        </InputWrapper>
-                    </div>
-                    <div>
-                        <InputWrapper valid={errList.description}>
-                            <label htmlFor="client-city">Project Description</label>
-                            <span>can't be empty</span>
-                            <input type="text" name="description" value={formData.description} onBlur={e => validateFormField(e)} onChange={e => handleFormDataChange(e)} />
-                        </InputWrapper>
-                    </div>
-                </form>
+                    ))}
+                    <Button className="FormAddNewItem" onClick={addItem} type="new-item">Add Item</Button>
+                </div>
+                
+                {showNoEmptyFieldsErr && <div className="mainErrorMessage">- All fields must be added</div>}
+                {showItemErr && <div className="mainErrorMessage">- An item must be added</div>}
             </div>
-            <div>
-                <h3>Item List</h3>
-                {items && items.map(item => (
-                    <div key={item.id}>
-                        <FormItem key={item.id} {...item} deleteItem={deleteItem} setItemValue={setItemValue} />
-                    </div>
-                ))}
-            </div>
-            <Button className="FormAddNewItem"onClick={addItem} type="new-item">Add Item</Button>
-            
-            {showNoEmptyFieldsErr && <div className="mainErrorMessage">- All fields must be added</div>}
-            {showItemErr && <div className="mainErrorMessage">- An item must be added</div>}
-            </FormMainWrapper>
-            
-            <FormButtonWrapper>
-                {btns}
-            </FormButtonWrapper>
-        </FormWrapper> 
-        </FormBackgroundOverlay>
-        </>
-        , document.getElementById("portal"))
+
+        </FormMainWrapper>
+                
+        <FormButtonWrapper>
+            {btns}
+        </FormButtonWrapper>
+    </FormWrapper> 
+    </FormBackgroundOverlay>
+    </>
+    , document.getElementById("portal"))
 }
 const FormBackgroundOverlay = styled.div `
     position: fixed;
@@ -576,6 +581,7 @@ const FormButtonWrapper = styled.div `
     @media screen and (min-width: 768px) {
             max-width: 616px;
             right: auto;
+            padding: 21px 40px 21px 24px;
     }
     @media screen and (min-width: 1024px) {
             max-width: 719px;
@@ -587,8 +593,12 @@ const FormMainWrapper = styled.div `
     padding: 32px 24px 180px;
     overflow: auto;
     height: 100%;
+    @media screen and (min-width: 768px) {
+        overflow: none;
+        height: auto;
+    }
     @media screen and (min-width: 1024px) {
-        padding: 32px 24px 90px 136px;
+        padding: 32px 24px 100px 136px;
     }
 
     h2 {
@@ -609,6 +619,18 @@ const FormMainWrapper = styled.div `
         font-size: 12px;
         line-height: 15px;
         margin-bottom: 24px;
+    }
+
+    .wrapperProba {
+        @media screen and (min-width: 768px) {
+            overflow: auto;
+            max-height: calc(100vh - 300px);
+            padding-bottom: 24px;
+            padding-right: 16px;
+        }
+        @media screen and (min-width: 1024px) {
+            max-height: calc(100vh - 220px);
+        }
     }
 
     .formBillPlace {
@@ -657,7 +679,7 @@ const FormMainWrapper = styled.div `
     }
 `
 
-const InputWrapper = styled.span`
+export const InputWrapper = styled.span`
     label {
         font-weight: 500;
         font-size: 12px;

@@ -13,23 +13,6 @@ export const light = {
 			fieldBg: '#ffffff',
 			fieldBorder: '#DFE3FA'
 		},
-		btn: {
-			secondary: {
-				bg: '#f9fafe',
-				hover: '#dfe3fa',
-				text: '#7e88c3'
-			},
-			tertiary: {
-				bg: '#363b53',
-				hover: '#0c0e16',
-				text: '#888eb0'
-			},
-			quaternary: {
-				bg: '#F9FAFE',
-				hover: '#DFE3FA',
-				text: '#7E88C3'
-			}
-		},
 		invoiceItem: {
 			bg: '#ffffff'
 		},
@@ -79,23 +62,6 @@ export const dark = {
 			bg: '#141625',
 			fieldBg: '#1e2139',
 			fieldBorder: '#252945'
-		},
-		btn: {
-			secondary: {
-				bg: '#252945',
-				hover: '#ffffff',
-				text: '#dfe3fa'
-			},
-			tertiary: {
-				bg: '#363b53',
-				hover: '#1e2139',
-				text: '#dfe3fa'
-			},
-			quaternary: {
-				bg: '#252945',
-				hover: '#1e2139',
-				text: '#DFE3FA'
-			}
 		},
 		invoiceItem: {
 			bg: '#1e2139'
