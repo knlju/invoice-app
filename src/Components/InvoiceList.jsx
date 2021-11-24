@@ -1,7 +1,6 @@
 import React from 'react'
 import Invoice from './Invoice'
 import styled from 'styled-components'
-import {GlobalStyles} from '../Components/Styles/GlobalStyles'
 import BackgroundImg from '../assets/illustration-empty.svg'
 
 const InvoiceWrapper = styled.div ` 

@@ -17,7 +17,6 @@ const ModalWrapper = styled.div`
     z-index: 1;
 `
 
-// TODO uzmi iz variables
 const ModalContent = styled.div`
     background: #FFFFFF;
     box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.100397);
@@ -36,7 +35,6 @@ const ModalContent = styled.div`
     p {
         margin-top: 8px;
         font-weight: 500;
-        /* TODO: mozda je 12px */
         font-size: 13px;
         line-height: 22px;
         letter-spacing: -0.25px;
@@ -50,7 +48,6 @@ const ModalContent = styled.div`
             line-height: 32px;
         }
     }
-    /* border: 1px solid red; */
 `
 
 const ButtonContainer = styled.div`

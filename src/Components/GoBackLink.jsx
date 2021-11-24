@@ -3,14 +3,6 @@ import styled from 'styled-components'
 import ArrowLeft from '../assets/icon-arrow-left.svg'
 import { Link } from 'react-router-dom'
 
-/*
-<div>
-    <Link to="/">
-        {"<"} Go back
-    </Link>
-</div>
-*/
-
 export const GoBackLinkWrapper = styled.div`
     display: flex;
     font-weight: bold;
@@ -21,22 +13,24 @@ export const GoBackLinkWrapper = styled.div`
     color: ${props => props.theme.color.text.heading};
     gap: 24px;
     align-items: center;
-    margin-left: 24px;
+    margin-left: ${({margin}) => margin ? margin : "24px"};
 
     img {
         height: 9px;
     }
 
     @media screen and (min-width: 768px) {
-            margin-left: 0;
-        }
+        margin-left: 0;
+    }
 `
 
 
-const GoBackLink = () => {
+const GoBackLink = ({mr, linkTo, onClick}) => {
+
+    console.log(mr, linkTo)
     return (
-        <Link to="/">
-            <GoBackLinkWrapper>
+        <Link to={linkTo || "/"} onClick={onClick}>
+            <GoBackLinkWrapper margin={mr}>
                 <img src={ArrowLeft} alt="arrow left" /> 
                 <div>Go back</div>
             </GoBackLinkWrapper>

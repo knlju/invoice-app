@@ -1,6 +1,5 @@
 import React, { useEffect, useContext } from 'react'
 import { useParams } from 'react-router'
-import { Link } from 'react-router-dom'
 import { useState } from 'react/cjs/react.development'
 import { InvoiceContext } from '../Context/InvoiceContext'
 import ConfirmationModal from './ConfirmationModal'
@@ -9,7 +8,6 @@ import GoBackLink from './GoBackLink'
 import styled from 'styled-components'
 import {PaymentStatusCont, PaymentStatus, PaymentStatusDot} from '../Components/Invoice'
 import Form from './Form'
-// import { url } from 'inspector'
 
 const InvoiceCont = styled.div ` 
         padding: 100px 0 0;
@@ -227,8 +225,6 @@ const InvoiceCont = styled.div `
         order: 1;
         @media screen and (min-width: 768px) {
             order: 0;
-            /* display: inline-block; */
-            /* width: 250px; */
             border-radius: 0 8px 8px 0;
         }
     `
@@ -257,8 +253,6 @@ const InvoiceCont = styled.div `
         margin-bottom: 16px;
         margin-top: 32px;
         @media screen and (min-width: 768px) {
-            /* display: inline-block; */
-            /* width: 250px; */
             margin-bottom: 0;
             margin-top: 0;
             padding: 0;
@@ -282,7 +276,6 @@ const InvoiceCont = styled.div `
             gap: 16px;
             border-radius: 8px 0 0 8px;
             justify-content: flex-start;
-            /* padding-right: 166px; */
         }
         
     `
@@ -297,8 +290,6 @@ export default function InvoicePage() {
 
     useEffect(() => {
         const foundInv = findInvoice(id)
-        // // TODO mock ucitavanja, obrisati kasnije
-        // setTimeout(() => setInvoice(foundInv), 2000)
         setInvoice(foundInv)
     }, [])
 

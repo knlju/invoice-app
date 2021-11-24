@@ -1,10 +1,7 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
-import styled, { ThemeProvider  } from 'styled-components'
-// import styled from 'styled-components'
+import styled from 'styled-components'
 import Logo from '../assets/logo.svg'
 import Avatar from '../assets/image-avatar.jpg'
-import { light, dark } from '../Components/Styles/Themes'
 import ThemeToggle from '../Components/ThemeToggle'
 
 const HeaderStyle = styled.header ` 
@@ -67,30 +64,7 @@ const HeaderIcons = styled.div `
         flex-direction: column;
     }
 `
-// const ButtonIcon = styled.button ` 
-//     border: none;
-//     outline: none;
-//     background: transparent;
-//     cursor: pointer;
-//     outline: none;
-//     position: relative;
-    
-//      &::after {
-//         content: '';
-//         position: absolute;
-//         right: -24px;
-//         top: -26px;
-//         width: 1px;
-//         background-color: #494E6E;
-//         height: 72px;
-//         @media screen and (min-width: 1024px) {
-//             right: 10px;
-//             top: 0;
-//             transform: rotate(90deg);
-//             height: 103px;
-//         }
-//     }
-// `
+
 const AvatarImg = styled.img ` 
     content: url(${Avatar});
     border-radius: 50%;
@@ -106,23 +80,7 @@ const AvatarImg = styled.img `
 
 
 export default function Header({toggleTheme}) {
-
-    // const [theme, setTheme] = useState('light')
-
-	// useEffect(() => {
-	// 	if (localStorage.getItem('theme') === undefined) {
-	// 		localStorage.setItem('theme', 'light')
-	// 	}
-	// 	setTheme(localStorage.getItem('theme'))
-	// }, [setTheme])
-
-    // function toggleTheme() {
-	// 	localStorage.setItem('theme', theme === 'light' ? 'dark' : 'light')
-    //     setTheme(localStorage.getItem('theme'))
-    // }
-
     return (
-        
         <HeaderStyle>
             <HeaderLogo />
             <HeaderIcons>

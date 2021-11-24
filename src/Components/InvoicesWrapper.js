@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react'
-import PropTypes from 'prop-types'
 import InvoiceList from './InvoiceList'
 import { InvoiceContext } from '../Context/InvoiceContext'
 import { Button } from './Styles/Components.style'
@@ -67,14 +66,6 @@ const NewInvoiceHeaderFilter = styled.div `
     justify-content: space-between;
 `
 
-// const InvoicesLengthMob = styled.span ` 
-//     display: none;
-//     color: ${props => props.theme.color.text.bodyA};
-//     @media screen and (min-width: 768px) { 
-//         display: inline-block;
-//     }
-
-// `
 const InvoicesFilterMob = styled.span ` 
     display: none;
     @media screen and (min-width: 768px) { 
@@ -94,7 +85,7 @@ const InvoicesFilterContainer = styled.div `
     &>div:first-child {
         display: flex;
         align-items: center;
-        /* gap: 16px; */
+        cursor: pointer;
 
         span {
             font-weight: 700;
@@ -203,7 +194,7 @@ const NewInvoiceWrapper = styled.div `
 
 const InvoicesWrapper = props => {
     const [filters, setFilters] = useState([])
-    const {invoices, setInvoices} = useContext(InvoiceContext)
+    const {invoices} = useContext(InvoiceContext)
     const [showFilterModal, setShowFilterModal] = useState(false)
     const [formOpen, setFormOpen] = useState(false)
 
@@ -231,11 +222,11 @@ const InvoicesWrapper = props => {
     } else if (!filters) {
         return `There are ${num} total invoices.`
     } else {
-        return `There are ${num} ${filters} invoices.`
+        return `There are ${num} ${filters.join(", ")} invoices.`
     }
     }
     
-    const message = invoicesMessage(invoices && invoices.filter((item)=> filters.includes(item.status)).length, filters);
+    const message = invoicesMessage(invoices && filters.length > 0 ? invoices.filter((item)=> filters.includes(item.status)).length : invoices.length, filters);
 
     return (
         <>
@@ -248,8 +239,7 @@ const InvoicesWrapper = props => {
                 </div>
                 <NewInvoiceHeaderFilter>
                     <InvoicesFilterContainer>
-                        <div onClick={() => setShowFilterModal(!showFilterModal)}> <span className="newInvoiceFilterDesc">Filter </span> <InvoicesFilterMob> by status</InvoicesFilterMob>   <FilterArrowDown rotateArrow={showFilterModal}/> </div>
-                            {/* TO DO - CUSTOM CHECKBOX */}
+                        <div onClick={() => setShowFilterModal(!showFilterModal)} className="pointer"> <span className="newInvoiceFilterDesc">Filter </span> <InvoicesFilterMob> by status</InvoicesFilterMob>   <FilterArrowDown rotateArrow={showFilterModal}/> </div>
                         {showFilterModal && <CheckboxModal>
                             <label htmlFor="draft">
                                 <input type="checkbox" name="draft" id="draft" value={filters.includes("draft")} onChange={e => handleFilterChange("draft")} /> 
@@ -289,10 +279,6 @@ const InvoicesWrapper = props => {
             </NewInvoiceWrapper>
         </>
     )
-}
-
-InvoicesWrapper.propTypes = {
-
 }
 
 export default InvoicesWrapper

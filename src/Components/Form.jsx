@@ -1,18 +1,20 @@
 import React, { useContext, useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
 import { Button } from './Styles/Components.style'
 import { InvoiceContext } from '../Context/InvoiceContext'
-import TrashIcon from '../assets/icon-delete.svg'
+import { ReactComponent as PlusSVG } from '../assets/icon-plus.svg'
+import {ReactComponent as TrashIconSVG} from '../assets/icon-delete.svg'
 import Select from '../Components/Select.style'
+import GoBackLink from './GoBackLink'
 
 const FormItem = ({id, name, quantity, price, total, setItemValue, deleteItem}) => {
 
     const handlePriceChange = e => {
         const { name, value } = e.target
-        setItemValue(name, value, id)
-        setItemValue("total", parseFloat(e.target.value) * quantity, id)
+        setItemValue(name, parseFloat(value).toFixed(2), id)
+        const total = parseFloat((parseFloat(value) * quantity).toFixed(2))
+        setItemValue("total", total, id)
     }
 
     const handleQuantityChange = e => {
@@ -34,24 +36,23 @@ const FormItem = ({id, name, quantity, price, total, setItemValue, deleteItem}) 
                 <div>
                     <InputWrapper>
                         <label htmlFor="quantity">Qty.</label>
-                        <input type="number" name="quantity" value={quantity} onChange={handleQuantityChange} />
+                        <input type="number" name="quantity" min="1" value={quantity} onChange={handleQuantityChange} />
                     </InputWrapper>        
                 </div>
                 <div>
                     <InputWrapper>
                         <label htmlFor="price">Price</label>
-                        <input type="number" name="price" value={price} onChange={handlePriceChange} />
+                        <input type="number" name="price" min="1" value={price} onChange={handlePriceChange} />
                     </InputWrapper>        
                 </div>
                 <div>
                     <InputWrapper>
                         <label htmlFor="total">Total</label>
-                        {/* <input type="number" name="total" value={total} readOnly /> */}
                         <h3>{total}</h3>
                     </InputWrapper>        
                 </div>
                 <Button className="formTrashBtn" onClick={() => deleteItem(id)}>
-                    <img src={TrashIcon} alt="delete-icon" />
+                    <TrashIconSVG alt="delete-icon" />
                 </Button>
             </div>
         </FormNewItemWrapper>
@@ -98,6 +99,12 @@ const FormNewItemWrapper = styled.div `
         display: flex;
         align-items: center;
         justify-content: center;
+
+        &:hover {
+            path {
+                fill: #EC5757;
+            }
+        }
     }
 
 `
@@ -138,9 +145,9 @@ const emptyInvoice = {
     items: [
         {
             name: "New Item", 
-            quantity: 0, 
-            price: 0, 
-            total: 0, 
+            quantity: 1, 
+            price: 1, 
+            total: 1, 
             id: getId()
         }
     ],
@@ -165,7 +172,6 @@ const newErrList = {
     description: false,
 }
 
-// TODO finish
 const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
     const getInvoiceItemsMapped = () => {
         const invoiceCopy = {...invoice}
@@ -192,9 +198,16 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
     const [ showNoEmptyFieldsErr, setShowNoEmptyFieldsErr ] = useState(false)
     const [ showItemErr, setShowItemErr ] = useState(false)
 
-    useEffect(()=>{
+    useEffect(() => {
+        document.body.style.overflow = "hidden"
+        return () => {
+            document.body.style.overflow = "auto"
+        }
+    }, [])
+
+    useEffect(() => {
         calculateTotal()
-    }, [items])
+    }, [ items ])
 
     const handleSAChange = e => {
         const { name, value } = e.target
@@ -252,7 +265,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
     const addItem = () => {
         setItems(prevItems => 
             [...prevItems, 
-                {name: "New Item", quantity: 0, price: 0, total: 0, id: getId()}
+                {name: "New Item", quantity: 1, price: 1, total: 1, id: getId()}
             ]
         )
     }
@@ -314,11 +327,11 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
                 newErrList[key] = true
             }
         }
+        if(!isValid) setShowNoEmptyFieldsErr(true)
         if(items.length === 0) {
             isValid = false
             setShowItemErr(true)
         }
-        if(!isValid) setShowNoEmptyFieldsErr(true)
         setErrList(newErrList)
         return isValid
     }
@@ -341,11 +354,13 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
 
     const saveChanges = () => {
         if(!validateForm()) return
+        const status = invoice.status === "draft" ? "pending" : "paid"
         const newInvoice = {
             ...formData,
             clientAddress,
             senderAddress,
             items,
+            status,
             total: totalState
         }
         const newInvoices = invoices.map(inv => inv.id === formData.id ? newInvoice : inv)
@@ -372,15 +387,19 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
     const btns = invoice === emptyInvoice ? (
         // TODO add flex etc
         <>
-            <Button type="edit" onClick={e => setFormOpen(false)}>
-                Discard
-            </Button>
-            <Button type="draft" onClick={saveAsDraft}>
-                Save as Draft
-            </Button>
-            <Button type="purple" onClick={addInvoice}>
-                Save & Send
-            </Button>
+            <div>
+                <Button type="edit" className="btn-left" onClick={e => setFormOpen(false)}>
+                    Discard
+                </Button>
+            </div>
+            <div>
+                <Button type="draft" onClick={saveAsDraft}>
+                    Save as Draft
+                </Button>
+                <Button type="purple" onClick={addInvoice}>
+                    Save & Send
+                </Button>
+            </div>
         </>
     ) : (
         <>
@@ -393,23 +412,21 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
         </>
     )
 
-    const calculateTotal = () => setTotalState(items.reduce((total, item) => total +  parseFloat(item.total), 0))
+    const calculateTotal = () => setTotalState(items.reduce((total, item) => parseFloat((total +  parseFloat(item.total)).toFixed(2)), 0))
     const dateProps = invoice === emptyInvoice ?  {onChange:e => handleFormDataChange(e)} : {readOnly: true}
 
     return ReactDOM.createPortal(
         <>
-        <FormBackgroundOverlay>
-        <FormWrapper>
+        <FormBackgroundOverlay onClick={() => setFormOpen(false)}>
+        <FormWrapper onClick={e => e.stopPropagation()}>
             <FormMainWrapper>
             <div className="formMainWrapperHeader">
-                <Link to="/">
-                    <div>{"<"} Go back</div>
-                </Link>
-                <h2>{ invoice.id ? `Edit ${invoice.id}` : "New Invoice" }</h2>
+                <GoBackLink mr={"0"} linkTo={"#"} onClick={() => setFormOpen(false)} />
+                <h2>{ invoice.id ? `Edit #${invoice.id}` : "New Invoice" }</h2>
             </div>
             <div className="wrapperProba">
                 <div>
-                    <form action="">
+                    <form>
                         <h4>Bill From</h4>
                         <div>
                             <InputWrapper valid={errList.senderAddress.street}>
@@ -511,7 +528,10 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
                             <FormItem key={item.id} {...item} deleteItem={deleteItem} setItemValue={setItemValue} />
                         </div>
                     ))}
-                    <Button className="FormAddNewItem" onClick={addItem} type="new-item">Add Item</Button>
+                    <Button className="FormAddNewItem" onClick={addItem} type="new-item">
+                        <PlusSVG fill="#7E88C3" />
+                        Add Item
+                    </Button>
                 </div>
                 
                 {showNoEmptyFieldsErr && <div className="mainErrorMessage">- All fields must be added</div>}
@@ -520,7 +540,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
 
         </FormMainWrapper>
                 
-        <FormButtonWrapper>
+        <FormButtonWrapper isEdit={invoice === emptyInvoice}>
             {btns}
         </FormButtonWrapper>
     </FormWrapper> 
@@ -571,7 +591,7 @@ const FormButtonWrapper = styled.div `
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: ${({isEdit}) => isEdit ? "space-between" : "flex-end"};
     padding: 21px 24px;
     gap: 8px;
     background-color: ${props => props.theme.color.invoiceItem.bg};
@@ -647,19 +667,14 @@ const FormMainWrapper = styled.div `
         align-items: center;
         justify-content: flex-start;
         gap: 23px;
-        /* @media screen and (min-width: 768px) {
-
-            justify-content: space-between;
-            flex: 1;
-        } */
     }    
     .FormAddNewItem {
         width: 100%;
         margin-bottom: 32px;
+        path {
+            fill: #7E88C3;
+        }
     }
-    /* .formBillPlaceCityPost > * {
-        flex: 1;
-    } */
     .formTrashBtn {
         background: transparent;
     }
