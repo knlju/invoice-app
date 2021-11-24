@@ -66,6 +66,7 @@ const FormNewItemWrapper = styled.div `
         @media screen and (min-width: 768px) {
             width: auto;
             margin-right: 16px;
+            min-width: 214px;
         }
     }
     input[type=text] {
@@ -334,102 +335,106 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
         <FormBackgroundOverlay>
         <FormWrapper>
             <FormMainWrapper>
-            <div>
-                <Link to="/">
-                    <div>{"<"} Go back</div>
-                </Link>
-                <h2>{ invoice.id ? `Edit ${invoice.id}` : "New Invoice" }</h2>
-                <form action="">
-                    <h4>Bill From</h4>
-                    <div>
-                        <label htmlFor="street-address-from">Street Address</label>
-                        <input type="text" value={senderAddress.street} onChange={e => handleSAChange(e)} name="street" id="street-address-from" />
-                    </div>
-                    <div className="formBillPlace">
-                        <div className="formBillPlaceCityPost">
-                            <div>
-                                <label htmlFor="city">City</label>
-                                <input type="text" name="city" value={senderAddress.city} onChange={e => handleSAChange(e)} />
+                <div className="formMainWrapperHeader">
+                    <Link to="/">
+                        <div>{"<"} Go back</div>
+                    </Link>
+                    <h2>{ invoice.id ? `Edit ${invoice.id}` : "New Invoice" }</h2>
+                </div>
+            <div className="wrapperProba">
+                <div>
+                    <form action="">
+                        <h4>Bill From</h4>
+                        <div>
+                            <label htmlFor="street-address-from">Street Address</label>
+                            <input type="text" value={senderAddress.street} onChange={e => handleSAChange(e)} name="street" id="street-address-from" />
+                        </div>
+                        <div className="formBillPlace">
+                            <div className="formBillPlaceCityPost">
+                                <div>
+                                    <label htmlFor="city">City</label>
+                                    <input type="text" name="city" value={senderAddress.city} onChange={e => handleSAChange(e)} />
+                                </div>
+                                <div>
+                                    <label htmlFor="post-code">Post Code</label>
+                                    <input type="text" name="postCode" value={senderAddress.postCode} onChange={e => handleSAChange(e)} />
+                                </div>
                             </div>
                             <div>
-                                <label htmlFor="post-code">Post Code</label>
-                                <input type="text" name="postCode" value={senderAddress.postCode} onChange={e => handleSAChange(e)} />
+                                <label htmlFor="country">Country</label>
+                                <input type="text" name="country" value={senderAddress.country} onChange={e => handleSAChange(e)}  />
+                            </div>
+                        </div>
+                        <h4>Bill To</h4>
+                        <div>
+                            <label htmlFor="clietns-name">Client’s Name</label>
+                            <input type="text" name="clientName" value={formData.clientName} onChange={e => handleFormDataChange(e)} />
+                            <label htmlFor="client-email">Client’s Email</label>
+                            <input type="text" name="clientEmail" value={formData.clientEmail} onChange={e => handleFormDataChange(e)} />
+                            <label htmlFor="street-address">Street Address</label>
+                            <input type="text" name="street" value={clientAddress.street} onChange={e => handleCAChange(e)} />
+                        </div>
+                        <div className="formBillPlace">
+                            <div className="formBillPlaceCityPost">
+                                <div>
+                                    <label htmlFor="client-city">City</label>
+                                    <input type="text" name="city" value={clientAddress.city} onChange={e => handleCAChange(e)} />
+                                </div>
+                                <div>
+                                    <label htmlFor="client-post-code">Post Code</label>
+                                    <input type="text" name="postCode" value={clientAddress.postCode} onChange={e => handleCAChange(e)} />
+                                </div>
+                            </div>
+                            <div>
+                                <label htmlFor="country">Street Address</label>
+                                <input type="text" name="country" value={clientAddress.country} onChange={e => handleCAChange(e)} />
                             </div>
                         </div>
                         <div>
-                            <label htmlFor="country">Country</label>
-                            <input type="text" name="country" value={senderAddress.country} onChange={e => handleSAChange(e)}  />
-                        </div>
-                    </div>
-                    <h4>Bill To</h4>
-                    <div>
-                        <label htmlFor="clietns-name">Client’s Name</label>
-                        <input type="text" name="clientName" value={formData.clientName} onChange={e => handleFormDataChange(e)} />
-                        <label htmlFor="client-email">Client’s Email</label>
-                        <input type="text" name="clientEmail" value={formData.clientEmail} onChange={e => handleFormDataChange(e)} />
-                        <label htmlFor="street-address">Street Address</label>
-                        <input type="text" name="street" value={clientAddress.street} onChange={e => handleCAChange(e)} />
-                    </div>
-                    <div className="formBillPlace">
-                        <div className="formBillPlaceCityPost">
-                            <div>
-                                <label htmlFor="client-city">City</label>
-                                <input type="text" name="city" value={clientAddress.city} onChange={e => handleCAChange(e)} />
-                            </div>
-                            <div>
-                                <label htmlFor="client-post-code">Post Code</label>
-                                <input type="text" name="postCode" value={clientAddress.postCode} onChange={e => handleCAChange(e)} />
-                            </div>
+                            <label htmlFor="client-city">Invoice Date</label>
+                            <input type="date" name="createdAt" value={formData.createdAt}
+                            onChange={e => handleCAChange(e)} 
+                            />
+                            {/* <label>
+                                Payment Terms
+                                <select name="paymentDue" value={formData.paymentTerms} onChange={e => handlePaymentDueChange(e)}>
+                                    <option value="1">Net 1 day</option>
+                                    <option value="7">Net 7 day</option>
+                                    <option value="14">Net 14 day</option>
+                                    <option value="30">Net 30 day</option>
+                                </select>
+                            </label> */}
+
+
+                            <Select label="Payment Terms" name="paymentTerms" options={dropdownOptions}/>
+
+
                         </div>
                         <div>
-                            <label htmlFor="country">Street Address</label>
-                            <input type="text" name="country" value={clientAddress.country} onChange={e => handleCAChange(e)} />
+                            <label htmlFor="client-city">Project Description</label>
+                            <input type="text" name="description" value={formData.description} onChange={e => handleFormDataChange(e)} />
                         </div>
-                    </div>
-                    <div>
-                        <label htmlFor="client-city">Invoice Date</label>
-                        <input type="date" name="createdAt" value={formData.createdAt}
-                         onChange={e => handleCAChange(e)} 
-                         />
-                        {/* <label>
-                            Payment Terms
-                            <select name="paymentDue" value={formData.paymentTerms} onChange={e => handlePaymentDueChange(e)}>
-                                <option value="1">Net 1 day</option>
-                                <option value="7">Net 7 day</option>
-                                <option value="14">Net 14 day</option>
-                                <option value="30">Net 30 day</option>
-                            </select>
-                        </label> */}
-
-
-                         <Select label="Payment Terms" name="paymentTerms" options={dropdownOptions}/>
-
-
-                    </div>
-                    <div>
-                        <label htmlFor="client-city">Project Description</label>
-                        <input type="text" name="description" value={formData.description} onChange={e => handleFormDataChange(e)} />
-                    </div>
-                </form>
+                    </form>
+                </div>
+                <div>
+                    <h3>Item List</h3>
+                    {items && items.map(item => (
+                        <div key={item.id}>
+                            <FormItem key={item.id} {...item} deleteItem={deleteItem} setItemValue={setItemValue} />
+                            {/* <Button className="formTrashBtn" onClick={() => deleteItem(item.id)}>
+                                <img src={TrashIcon} alt="delete-icon" />
+                            </Button> */}
+                        </div>
+                    ))}
+                    <Button className="FormAddNewItem"onClick={addItem} type="new-item">Add Item</Button>
+                </div>
             </div>
-            <div>
-
-                <h3>Item List</h3>
-                {items && items.map(item => (
-                    <div key={item.id}>
-                        <FormItem key={item.id} {...item} deleteItem={deleteItem} setItemValue={setItemValue} />
-                        {/* <Button className="formTrashBtn" onClick={() => deleteItem(item.id)}>
-                            <img src={TrashIcon} alt="delete-icon" />
-                        </Button> */}
-                    </div>
-                ))}
-            </div>
-            <div>
+            {/* <div>
                 <label htmlFor="">
                     <input type="total" value={totalState} readOnly />
                 </label>
-            </div>
-            <Button className="FormAddNewItem"onClick={addItem} type="new-item">Add Item</Button>
+            </div> */}
+            
             </FormMainWrapper>
             
             <FormButtonWrapper>
@@ -491,6 +496,7 @@ const FormButtonWrapper = styled.div `
     @media screen and (min-width: 768px) {
             max-width: 616px;
             right: auto;
+            padding: 21px 40px 21px 24px;
     }
     @media screen and (min-width: 1024px) {
             max-width: 719px;
@@ -502,8 +508,12 @@ const FormMainWrapper = styled.div `
     padding: 32px 24px 180px;
     overflow: auto;
     height: 100%;
+    @media screen and (min-width: 768px) {
+        overflow: none;
+        height: auto;
+    }
     @media screen and (min-width: 1024px) {
-        padding: 32px 24px 90px 136px;
+        padding: 32px 24px 100px 136px;
     }
 
     h2 {
@@ -526,6 +536,17 @@ const FormMainWrapper = styled.div `
         margin-bottom: 24px;
     }
 
+    .wrapperProba {
+        @media screen and (min-width: 768px) {
+            overflow: auto;
+            max-height: calc(100vh - 300px);
+            padding-bottom: 24px;
+            padding-right: 16px;
+        }
+        @media screen and (min-width: 1024px) {
+            max-height: calc(100vh - 220px);
+        }
+    }
     label {
         font-weight: 500;
         font-size: 12px;

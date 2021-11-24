@@ -12,10 +12,10 @@ import Form from './Form'
 // import { url } from 'inspector'
 
 const InvoiceCont = styled.div ` 
-        padding: 32px 0 0;
+        padding: 100px 0 0;
 
         @media screen and (min-width: 768px) {
-            padding: 48px 24px;
+            padding: 100px 24px 48px;
             max-width: 688px;
             margin: 0 auto;
         }

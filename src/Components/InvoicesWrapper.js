@@ -46,8 +46,12 @@ const NewInvoiceHeader = styled.div `
     align-items: center;
     justify-content: space-between;
     /* padding: 0 24px; */
-    margin: 32px auto 0 auto;
+    margin: 100px auto 0 auto;
     width: 100%;
+
+    @media screen and (min-width: 768px) { 
+        margin: 72px auto 0 auto;
+    }
 
     .newInvoiceTitle {
         color: ${props => props.theme.color.text.heading};
