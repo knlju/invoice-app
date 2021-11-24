@@ -27,25 +27,33 @@ const FormItem = ({id, name, quantity, price, total, setItemValue, deleteItem}) 
         <>
         <FormNewItemWrapper>
             <div className="formNewItemName">
-                <label htmlFor="name">Item name</label>
-                <input type="text" name="name" value={name} onChange={setItemValue} />
+                <InputWrapper>
+                    <label htmlFor="name">Item name</label>
+                    <input type="text" name="name" value={name} onChange={setItemValue} />
+                </InputWrapper>        
             </div>
             <div className="formNewItemQPT">
                 <div>
-                    <label htmlFor="quantity">Qty.</label>
-                    <input type="number" name="quantity" value={quantity} onChange={handleQuantityChange} />
+                    <InputWrapper>
+                        <label htmlFor="quantity">Qty.</label>
+                        <input type="number" name="quantity" value={quantity} onChange={handleQuantityChange} />
+                    </InputWrapper>        
                 </div>
                 <div>
-                    <label htmlFor="price">Price</label>
-                    <input type="number" name="price" value={price} onChange={handlePriceChange} />
+                    <InputWrapper>
+                        <label htmlFor="price">Price</label>
+                        <input type="number" name="price" value={price} onChange={handlePriceChange} />
+                    </InputWrapper>        
                 </div>
                 <div>
-                    <label htmlFor="total">Total</label>
-                    {/* <input type="number" name="total" value={total} readOnly /> */}
-                    <h3>{total}</h3>
+                    <InputWrapper>
+                        <label htmlFor="total">Total</label>
+                        {/* <input type="number" name="total" value={total} readOnly /> */}
+                        <h3>{total}</h3>
+                    </InputWrapper>        
                 </div>
                 <Button className="formTrashBtn" onClick={() => deleteItem(id)}>
-                        <img src={TrashIcon} alt="delete-icon" />
+                    <img src={TrashIcon} alt="delete-icon" />
                 </Button>
             </div>
         </FormNewItemWrapper>
@@ -156,7 +164,6 @@ const newErrList = {
         country: false
     },
     description: false,
-    items: []
 }
 
 // TODO finish
@@ -182,7 +189,9 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
     const [ items, setItems ] = useState(getInvoiceItemsMapped())
     const { invoices, setInvoices } = useContext(InvoiceContext)
     const [ totalState, setTotalState ] = useState(invoice.total)
-    const [ errList, setErrList ] = useState({...newErrList, items: items.map(item => false)})
+    const [ errList, setErrList ] = useState(newErrList)
+    const [ showNoEmptyFieldsErr, setShowNoEmptyFieldsErr ] = useState(false)
+    const [ showItemErr, setShowItemErr ] = useState(false)
 
     useEffect(()=>{
         calculateTotal()
@@ -190,17 +199,35 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
 
     const handleSAChange = e => {
         const { name, value } = e.target
+        validateSAField(e)
         setSenderAddress(prevItems => {return {...prevItems, [name]: value}})
+    }
+
+    const validateSAField = e => {
+        const { name, value } = e.target
+        validateFieldNonEmpty(value, isValid => updateErrState(name, isValid, "senderAddress"))
     }
 
     const handleCAChange = e => {
         const { name, value } = e.target
+        validateCAField(e)
         setClientAddress(prevItems => {return {...prevItems, [name]: value}})
+    }
+
+    const validateCAField = e => {
+        const { name, value } = e.target
+        validateFieldNonEmpty(value, isValid => updateErrState(name, isValid, "clientAddress"))
     }
 
     const handleFormDataChange = e => {
         const { name, value } = e.target
+        validateFormField(e)
         setFormData(prevItems => {return {...prevItems, [name]: value}})
+    }
+
+    const validateFormField = e => {
+        const { name, value } = e.target
+        validateFieldNonEmpty(value, isValid => updateErrState(name, isValid))
     }
 
     const handlePaymentDueChange = e => {
@@ -239,21 +266,61 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
         })
     }
 
-    const validateForm = () => {
-        // TODO good luck
-        let isValid = true
-        if(senderAddress.street.trim() === "") {
-            isValid = false
-            setErrList(prevErrs => {
-                return {
-                    ...prevErrs,
-                    senderAddress: {
-                        ...prevErrs.senderAddress,
-                        street: true
-                    }
-                }
-            })
+    const updateErrState = (attr, isValid = true, nested = false) => {
+        console.log(attr, isValid, nested)
+        const newErrList = {...errList}
+        console.log("errListCopy", newErrList)
+        if(nested) {
+            const nestedCopy = {...errList[nested]}
+            nestedCopy[attr] = isValid
+            newErrList[nested] = nestedCopy
+            console.log("errListCopy nested", newErrList)
+        } else {
+            newErrList[attr] = isValid
+            console.log("errListCopy attr only", newErrList)
         }
+        setErrList(newErrList)
+    }
+
+    const validateFieldNonEmpty = (value, cbUpdateErrState) => {
+        if(value.trim() === "") cbUpdateErrState(true)
+        else cbUpdateErrState(false)
+    }
+
+    const validateForm = () => {
+        let isValid = true
+        const newErrList = {
+            ...errList,
+            clientAddress: {...errList.clientAddress},
+            senderAddress: {...errList.senderAddress}
+        }
+        for (const [key, value] of Object.entries(senderAddress)) {
+            if(!Object.keys(errList.senderAddress).includes(key)) continue
+            if(value.trim() === "") {
+                isValid = false
+                newErrList.senderAddress[key] = true
+            }
+        }
+        for (const [key, value] of Object.entries(clientAddress)) {
+            if(!Object.keys(errList.clientAddress).includes(key)) continue
+            if(value.trim() === "") {
+                isValid = false
+                newErrList.clientAddress[key] = true
+            }
+        }
+        for (const [key, value] of Object.entries(formData)) {
+            if(!Object.keys(errList).includes(key)) continue
+            if(value.trim() === "") {
+                isValid = false
+                newErrList[key] = true
+            }
+        }
+        if(items.length === 0) {
+            isValid = false
+            setShowItemErr(true)
+        }
+        if(!isValid) setShowNoEmptyFieldsErr(true)
+        setErrList(newErrList)
         return isValid
     }
 
@@ -328,6 +395,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
     )
 
     const calculateTotal = () => setTotalState(items.reduce((total, item) => total +  parseFloat(item.total), 0))
+    const dateProps = invoice === emptyInvoice ?  {onChange:e => handleFormDataChange(e)} : {readOnly: true}
 
     return ReactDOM.createPortal(
         <>
@@ -335,101 +403,116 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
         <FormWrapper>
             <FormMainWrapper>
             <div>
-                <Link to="/">
+                {/* TODO */}
+                <div onClick={() => setFormOpen(false)}>
                     <div>{"<"} Go back</div>
-                </Link>
-                <h2>{ invoice.id ? `Edit ${invoice.id}` : "New Invoice" }</h2>
+                </div>
+                <h2>{ invoice.id ? `Edit #${invoice.id}` : "New Invoice" }</h2>
                 <form action="">
                     <h4>Bill From</h4>
                     <div>
-                        <label htmlFor="street-address-from">Street Address</label>
-                        <input type="text" value={senderAddress.street} onChange={e => handleSAChange(e)} name="street" id="street-address-from" />
+                        <InputWrapper valid={errList.senderAddress.street}>
+                            <label htmlFor="street-address-from">Street Address</label>
+                            <span>can't be empty</span>
+                            <input type="text" value={senderAddress.street} onBlur={e => validateSAField(e)} onChange={e => handleSAChange(e)} name="street" id="street-address-from" />
+                        </InputWrapper>
                     </div>
                     <div className="formBillPlace">
                         <div className="formBillPlaceCityPost">
                             <div>
-                                <label htmlFor="city">City</label>
-                                <input type="text" name="city" value={senderAddress.city} onChange={e => handleSAChange(e)} />
+                                <InputWrapper valid={errList.senderAddress.city}>
+                                    <label htmlFor="city">City</label>
+                                    <span>can't be empty</span>
+                                    <input type="text" name="city" value={senderAddress.city} onBlur={e => validateSAField(e)} onChange={e => handleSAChange(e)} />
+                                </InputWrapper>
                             </div>
                             <div>
-                                <label htmlFor="post-code">Post Code</label>
-                                <input type="text" name="postCode" value={senderAddress.postCode} onChange={e => handleSAChange(e)} />
+                                <InputWrapper valid={errList.senderAddress.postCode}>
+                                    <label htmlFor="post-code">Post Code</label>
+                                    <span>can't be empty</span>
+                                    <input type="text" name="postCode" value={senderAddress.postCode} onBlur={e => validateSAField(e)} onChange={e => handleSAChange(e)} />
+                                </InputWrapper>
                             </div>
                         </div>
                         <div>
-                            <label htmlFor="country">Country</label>
-                            <input type="text" name="country" value={senderAddress.country} onChange={e => handleSAChange(e)}  />
+                            <InputWrapper valid={errList.senderAddress.country}>
+                                <label htmlFor="country">Country</label>
+                                <span>can't be empty</span>
+                                <input type="text" name="country" value={senderAddress.country} onBlur={e => validateSAField(e)} onChange={e => handleSAChange(e)}  />
+                            </InputWrapper>
                         </div>
                     </div>
                     <h4>Bill To</h4>
                     <div>
-                        <label htmlFor="clietns-name">Client’s Name</label>
-                        <input type="text" name="clientName" value={formData.clientName} onChange={e => handleFormDataChange(e)} />
-                        <label htmlFor="client-email">Client’s Email</label>
-                        <input type="text" name="clientEmail" value={formData.clientEmail} onChange={e => handleFormDataChange(e)} />
-                        <label htmlFor="street-address">Street Address</label>
-                        <input type="text" name="street" value={clientAddress.street} onChange={e => handleCAChange(e)} />
+                        <InputWrapper valid={errList.clientName}>
+                            <label htmlFor="clietns-name">Client’s Name</label>
+                            <span>can't be empty</span>
+                            <input type="text" name="clientName" value={formData.clientName} onBlur={e => validateFormField(e)} onChange={e => handleFormDataChange(e)} />
+                        </InputWrapper>
+                        <InputWrapper valid={errList.clientEmail}>
+                            <label htmlFor="client-email">Client’s Email</label>
+                            <span>can't be empty</span>
+                            <input type="text" name="clientEmail" value={formData.clientEmail} onBlur={e => validateFormField(e)} onChange={e => handleFormDataChange(e)} />
+                        </InputWrapper>
+                        <InputWrapper valid={errList.clientAddress.street}>
+                            <label htmlFor="street-address">Street Address</label>
+                            <span>can't be empty</span>
+                            <input type="text" name="street" value={clientAddress.street} onBlur={e => validateCAField(e)} onChange={e => handleCAChange(e)} />
+                        </InputWrapper>
                     </div>
                     <div className="formBillPlace">
                         <div className="formBillPlaceCityPost">
                             <div>
-                                <label htmlFor="client-city">City</label>
-                                <input type="text" name="city" value={clientAddress.city} onChange={e => handleCAChange(e)} />
+                                <InputWrapper valid={errList.clientAddress.city}>
+                                    <label htmlFor="client-city">City</label>
+                                    <span>can't be empty</span>
+                                    <input type="text" name="city" value={clientAddress.city} onBlur={e => validateCAField(e)} onChange={e => handleCAChange(e)} />
+                                </InputWrapper>
                             </div>
                             <div>
-                                <label htmlFor="client-post-code">Post Code</label>
-                                <input type="text" name="postCode" value={clientAddress.postCode} onChange={e => handleCAChange(e)} />
+                                <InputWrapper valid={errList.clientAddress.postCode}>
+                                    <label htmlFor="client-post-code">Post Code</label>
+                                    <span>can't be empty</span>
+                                    <input type="text" name="postCode" value={clientAddress.postCode} onBlur={e => validateCAField(e)} onChange={e => handleCAChange(e)} />
+                                </InputWrapper>
                             </div>
                         </div>
                         <div>
-                            <label htmlFor="country">Street Address</label>
-                            <input type="text" name="country" value={clientAddress.country} onChange={e => handleCAChange(e)} />
+                            <InputWrapper valid={errList.clientAddress.country}>
+                                <label htmlFor="country">Country</label>
+                                <span>can't be empty</span>
+                                <input type="text" name="country" value={clientAddress.country} onBlur={e => validateCAField(e)} onChange={e => handleCAChange(e)} />
+                            </InputWrapper>
                         </div>
                     </div>
                     <div>
-                        <label htmlFor="client-city">Invoice Date</label>
-                        <input type="date" name="createdAt" value={formData.createdAt}
-                         onChange={e => handleCAChange(e)} 
-                         />
-                        {/* <label>
-                            Payment Terms
-                            <select name="paymentDue" value={formData.paymentTerms} onChange={e => handlePaymentDueChange(e)}>
-                                <option value="1">Net 1 day</option>
-                                <option value="7">Net 7 day</option>
-                                <option value="14">Net 14 day</option>
-                                <option value="30">Net 30 day</option>
-                            </select>
-                        </label> */}
-
-
-                         <Select label="Payment Terms" name="paymentTerms" options={dropdownOptions}/>
-
-
+                        <InputWrapper>
+                            <label htmlFor="client-city">Invoice Date</label>
+                            <input type="date" name="createdAt" value={formData.createdAt} {...dateProps} />
+                        </InputWrapper>
+                        <Select label="Payment Terms" name="paymentTerms" options={dropdownOptions} value={formData.paymentTerms} onChange={e => handlePaymentDueChange(e)} />
                     </div>
                     <div>
-                        <label htmlFor="client-city">Project Description</label>
-                        <input type="text" name="description" value={formData.description} onChange={e => handleFormDataChange(e)} />
+                        <InputWrapper valid={errList.description}>
+                            <label htmlFor="client-city">Project Description</label>
+                            <span>can't be empty</span>
+                            <input type="text" name="description" value={formData.description} onBlur={e => validateFormField(e)} onChange={e => handleFormDataChange(e)} />
+                        </InputWrapper>
                     </div>
                 </form>
             </div>
             <div>
-
                 <h3>Item List</h3>
                 {items && items.map(item => (
                     <div key={item.id}>
                         <FormItem key={item.id} {...item} deleteItem={deleteItem} setItemValue={setItemValue} />
-                        {/* <Button className="formTrashBtn" onClick={() => deleteItem(item.id)}>
-                            <img src={TrashIcon} alt="delete-icon" />
-                        </Button> */}
                     </div>
                 ))}
             </div>
-            <div>
-                <label htmlFor="">
-                    <input type="total" value={totalState} readOnly />
-                </label>
-            </div>
             <Button className="FormAddNewItem"onClick={addItem} type="new-item">Add Item</Button>
+            
+            {showNoEmptyFieldsErr && <div className="mainErrorMessage">- All fields must be added</div>}
+            {showItemErr && <div className="mainErrorMessage">- An item must be added</div>}
             </FormMainWrapper>
             
             <FormButtonWrapper>
@@ -526,36 +609,6 @@ const FormMainWrapper = styled.div `
         margin-bottom: 24px;
     }
 
-    label {
-        font-weight: 500;
-        font-size: 12px;
-        line-height: 15px;
-        color: ${props => props.theme.color.text.formLabel}; 
-        letter-spacing: -0.25px;
-        display: block;
-        margin-bottom: 10px;
-    }
-    input {
-        width: 100%;
-        /* border: 1px solid ${props => props.valid ? props.theme.color.form.fieldBorder : '#EC5757'}; */
-        border: 1px solid ${props => props.theme.color.form.fieldBorder};
-        border-radius: 4px;
-        padding: 16px;
-        margin-bottom: 24px;
-        background: ${props => props.theme.color.form.fieldBg};
-        outline: none;
-        color: ${props => props.theme.color.text.heading};
-        font-weight: bold;
-        transition: all 0.3s ease;
-        ::placeholder {
-            color: ${props => props.theme.color.text.placeholder};
-            transition: color .3s;
-        }
-        :focus {
-            border: 1px solid #9277FF;
-        }
-    }
-
     .formBillPlace {
 
         @media screen and (min-width: 768px) {
@@ -577,10 +630,66 @@ const FormMainWrapper = styled.div `
             justify-content: space-between;
             flex: 1;
         } */
-    }
-    
+    }    
     .FormAddNewItem {
         width: 100%;
+    }
+    /* .formBillPlaceCityPost > * {
+        flex: 1;
+    } */
+    .formTrashBtn {
+        background: transparent;
+    }
+    .formAddNewItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .mainErrorMessage{
+        font-weight: 600;
+        font-size: 10px;
+        line-height: 15px;
+        letter-spacing: -0.208333px;
+        color: #EC5757;
+    }
+`
+
+const InputWrapper = styled.span`
+    label {
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 15px;
+        color: ${props => !props.valid ? props.theme.color.text.formLabel : '#EC5757'}; 
+        letter-spacing: -0.25px;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    input {
+        width: 100%;
+        border: 1px solid ${props => !props.valid ? props.theme.color.form.fieldBorder : '#EC5757'};
+        /* border: 1px solid ${props => props.theme.color.form.fieldBorder}; */
+        border-radius: 4px;
+        padding: 16px;
+        margin-bottom: 24px;
+        background: ${props => props.theme.color.form.fieldBg};
+        outline: none;
+        color: ${props => props.theme.color.text.heading};
+        font-weight: bold;
+        transition: all 0.3s ease;
+        ::placeholder {
+            color: ${props => props.theme.color.text.placeholder};
+            transition: color .3s;
+        }
+        :focus {
+            border: 1px solid #9277FF;
+        }
+    }
+    span {
+        display: inline-block;
+        visibility: ${props => !props.valid ? 'hidden' : 'visible'};
+        color: #EC5757;
+        margin-bottom: 9px;
+        float: right;
     }
 `
 

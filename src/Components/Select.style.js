@@ -41,13 +41,13 @@ const StyledSelect = styled.select`
     }
 `
 
-export default function Select({options}) {
+export default function Select({options, value, onChange}) {
 
     return (
         <Wrapper>
             <Label htmlFor='Payment Terms'>Payment Terms</Label>
             <SelectWrapper>
-                <StyledSelect>
+                <StyledSelect value={value} onChange={onChange}>
                     {options.map((option) => {
                         return (
                             <option key={option.value} value={option.value}>
