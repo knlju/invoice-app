@@ -49,6 +49,7 @@ const NewInvoiceHeader = styled.div `
     }
     .newInvoiceTitle {
         color: ${props => props.theme.color.text.heading};
+        margin-bottom: 8px;
     }
     .newInvoiceDesc {
         color: ${props => props.theme.color.text.bodyA};

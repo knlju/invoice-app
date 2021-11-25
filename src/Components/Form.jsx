@@ -166,11 +166,11 @@ const emptyInvoice = {
             name: "New Item", 
             quantity: 1, 
             price: 1, 
-            total: 0, 
+            total: 1, 
             id: getItemId()
         }
     ],
-    total: 0
+    total: 1
 }
 
 const newErrList = {
@@ -284,7 +284,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
     const addItem = () => {
         setItems(prevItems => 
             [...prevItems, 
-                {name: "New Item", quantity: 1, price: 1, total: 0, id: getItemId()}
+                {name: "New Item", quantity: 1, price: 1, total: 1, id: getItemId()}
             ]
         )
     }
@@ -582,8 +582,7 @@ const FormBtnsContDisDrfSave = styled.div `
                         </div>
                     ))}
                     <Button className="FormAddNewItem" onClick={addItem} type="new-item">
-                        <PlusSVG fill="#7E88C3" />
-                        Add Item
+                        <span>+</span> Add Item
                     </Button>
                 </div>
                 
@@ -626,6 +625,7 @@ const FormWrapper = styled.div `
     background-color: ${props => props.theme.color.form.bg};
     z-index: 5;
     border-radius: 0 20px 20px 0;
+    /* overflow: auto; */
     
     @media screen and (min-width: 768px) {
             max-width: 616px;
@@ -656,6 +656,7 @@ const FormButtonWrapper = styled.div `
     }
     @media screen and (min-width: 1024px) {
             max-width: 719px;
+            /* top: 0; */
     }
 `
 
@@ -739,8 +740,11 @@ const FormMainWrapper = styled.div `
     .FormAddNewItem {
         width: 100%;
         margin-bottom: 32px;
-        path {
-            fill: #7E88C3;
+        span {
+            font-size: 16px;
+            font-weight: 600;
+            position: relative;
+            top: 2px;
         }
     }
     .formTrashBtn {
@@ -781,6 +785,7 @@ export const InputWrapper = styled.span`
     input {
         width: 100%;
         border: 1px solid ${props => !props.valid ? props.theme.color.form.fieldBorder : '#EC5757'};
+        /* border: 1px solid ${props => props.theme.color.form.fieldBorder}; */
         border-radius: 4px;
         padding: 16px;
         margin-bottom: 24px;
