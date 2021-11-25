@@ -271,13 +271,15 @@ const InvoiceCont = styled.div `
 export default function InvoicePage() {
     const { id } = useParams()
     const {invoices, setInvoices} = useContext(InvoiceContext)
-    const [invoice, setInvoice] = useState(findInvoice(id))
+    const [invoice, setInvoice] = useState({})
     const [modalOpen, setModalOpen] = useState(false)
     const [formOpen, setFormOpen] = useState(false)
-    
-    function findInvoice(id){
-        return invoices.find(inv => inv.id === id)
-    } 
+    const findInvoice = id => invoices.find(inv => inv.id === id)
+
+    useEffect(() => {
+        const foundInv = findInvoice(id)
+        setInvoice(foundInv)
+    }, [])
 
     const deleteInvoice = () => {
         const newInvoices = [...invoices]
