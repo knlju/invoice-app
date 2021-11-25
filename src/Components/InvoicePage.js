@@ -276,7 +276,7 @@ export default function InvoicePage() {
     const [formOpen, setFormOpen] = useState(false)
     
     function findInvoice(id){
-        invoices.find(inv => inv.id === id)
+        return invoices.find(inv => inv.id === id)
     } 
 
     const deleteInvoice = () => {
