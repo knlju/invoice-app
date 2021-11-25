@@ -1,6 +1,5 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import { useParams } from 'react-router'
-import { useState } from 'react/cjs/react.development'
 import { InvoiceContext } from '../Context/InvoiceContext'
 import ConfirmationModal from './ConfirmationModal'
 import { Button } from './Styles/Components.style'
@@ -269,17 +268,16 @@ const InvoiceCont = styled.div `
         
     `
 export default function InvoicePage() {
-    const { id } = useParams();
-    const {invoices, setInvoices} = useContext(InvoiceContext);
-    const [invoice, 
-        setInvoice] = useState({test: "test"})
+    const { id } = useParams()
+    const {invoices, setInvoices} = useContext(InvoiceContext)
+    const [invoice, setInvoice] = useState(null)
     const [modalOpen, setModalOpen] = useState(false)
     const [formOpen, setFormOpen] = useState(false)
-    // const findInvoice = id => invoices.find(inv => inv.id === id)
+    const findInvoice = id => invoices.find(inv => inv.id === id)
 
     useEffect(() => {
-        // const foundInv = findInvoice(id)
-        // setInvoice(foundInv)
+        const foundInv = findInvoice(id)
+        setInvoice(foundInv)
     }, [])
 
     const deleteInvoice = () => {
