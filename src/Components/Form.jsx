@@ -377,6 +377,9 @@ const FormBtnsContDisDrfSave = styled.div `
     justify-content: space-between;
     gap: 7px;
     width: 100%;
+    @media screen and (min-width: 1024px) {
+        padding-left: 110px;
+    }
 
     button {
             padding: 16px 15px;
@@ -672,6 +675,10 @@ const FormMainWrapper = styled.div `
                 flex: 0 1 50%;
             }
         }
+
+        input[type=date]::-webkit-calendar-picker-indicator {
+            filter: invert(59%) sepia(12%) saturate(1306%) hue-rotate(194deg) brightness(91%) contrast(85%);
+        } 
     }
 
     .formBillPlace {
