@@ -12,7 +12,6 @@ import { formatDate } from '../utils/utils'
 
 const InvoiceCont = styled.div ` 
         padding: 100px 0 0;
-
         @media screen and (min-width: 768px) {
             padding: 100px 24px 48px;
             max-width: 688px;
@@ -45,7 +44,6 @@ const InvoiceCont = styled.div `
         span {
             color: ${props => props.theme.color.text.bodyA};
         }
-
         div:first-child>h3 {
             display: flex;
             align-items: center;
@@ -55,7 +53,6 @@ const InvoiceCont = styled.div `
         div:first-child>h3>span {
             display: inline-block;
         }
-
         div:last-child span {
             margin-bottom: 4px;
         }
@@ -65,17 +62,14 @@ const InvoiceCont = styled.div `
             }
         }
     `
-
     const InvoiceMainMiddle = styled.div ` 
         display: flex;
         flex-direction: column;
-
         @media screen and (min-width: 768px) {
             flex-direction: row;
             justify-content: flex-start;
             gap: 100px;
         }
-    
         h3 {
             color: ${props => props.theme.color.text.heading};
         }
@@ -88,7 +82,6 @@ const InvoiceCont = styled.div `
             @media screen and (min-width: 768px) {
                 gap: 100px;
             }
-
            & > div:first-child span {
                margin-bottom: 12px;
            }
@@ -96,7 +89,6 @@ const InvoiceCont = styled.div `
                margin-bottom: 30px;
            }
         }
-
         & div:last-child span:first-child {
             margin-bottom: 12px;
         }
@@ -106,14 +98,25 @@ const InvoiceCont = styled.div `
         & div:last-child span:not(:first-child) {
             margin-bottom: 5px;
         }
+        .dateAndBill {
+            @media screen and (min-width: 768px) {
+                flex: 2;
+            }
+        }
+        .mail-to {
+            @media screen and (min-width: 768px) {
+                flex: 1;
+            }
+        }
+        .mail-to h3 {
+            word-break: break-all;
+        }
     `
-
     const InvoiceTotal = styled.div ` 
         border-radius: 8px;
         background-color: ${props => props.theme.color.invoiceTable.bg};
         overflow: hidden;
     `
-
     const InvoiceTotalHeading = styled.div ` 
         display: flex;
         flex-direction: column;
@@ -127,7 +130,6 @@ const InvoiceCont = styled.div `
         @media screen and (min-width: 768px) {
             display: grid;
         }
-
         span {
             font-size: 11px;
             color: ${props => props.theme.color.text.bodyA};
@@ -150,12 +152,9 @@ const InvoiceCont = styled.div `
         display: grid;
         grid-template-columns: 1fr 1fr;
         align-items: center;
-        /* margin-bottom: 20px; */
-
         @media screen and (min-width: 768px) {
             grid-template-columns: 3fr 1fr 1fr 1fr;
         }
-
         div h4 {
             font-size: 12px;
             line-height: 15px;
@@ -163,7 +162,6 @@ const InvoiceCont = styled.div `
             color: ${props => props.theme.color.text.heading};
             margin-bottom: 6px;
         }
-
         &>span {
             color: ${props => props.theme.color.text.heading};
             font-weight: 700;
@@ -186,18 +184,14 @@ const InvoiceCont = styled.div `
         display: flex;
         align-items: center;
         gap: 3px;
-
         span {
             font-weight: 700;
             color: ${props => props.theme.color.text.bodyA};
         }
-
         @media screen and (min-width: 768px) {
             display: none;
         }
     `
-
-
     const InvoiceTotalFooter = styled.div ` 
         padding: 24px;
         background-color: ${props => props.theme.color.invoiceTable.footerBg};
@@ -205,7 +199,6 @@ const InvoiceCont = styled.div `
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         align-items: center;
-
         h2 {
             text-align: right;
         }
@@ -214,9 +207,7 @@ const InvoiceCont = styled.div `
             font-weight: 300;
         }
     `
-
     const ButtonsContainer = styled.div `  
-    
         background-color: ${props => props.theme.color.invoiceItem.bg};
         padding: 20px 24px;
         display: flex;
@@ -241,7 +232,6 @@ const InvoiceCont = styled.div `
     const InvoiceHelperContainer = styled.div ` 
         display: flex;
         flex-direction: column;
-
         @media screen and (min-width: 768px) {
             flex-wrap: wrap;
             flex-direction: row;
@@ -268,11 +258,9 @@ const InvoiceCont = styled.div `
         align-items: center;
         justify-content: space-between;
         border-radius: 8px;
-
         &>span {
             color: ${props => props.theme.color.text.bodyA};
         }
-
         @media screen and (min-width: 768px) {
             gap: 16px;
             border-radius: 8px 0 0 8px;
@@ -286,7 +274,6 @@ export default function InvoicePage() {
     const [invoice, setInvoice] = useState(null)
     const [modalOpen, setModalOpen] = useState(false)
     const [formOpen, setFormOpen] = useState(false)
-
     const findInvoice = id => invoices.find(inv => inv.id === id)
 
     useEffect(() => {
@@ -299,28 +286,23 @@ export default function InvoicePage() {
         newInvoices.splice(newInvoices.findIndex(inv => inv.id === id), 1)
         setInvoices(newInvoices)
     }
-
     const markAsPaid = () => {
         const updatedInvoice = {...invoice, status: "paid"}
         const newInvoices = invoices.map(inv => inv.id === id ? updatedInvoice : inv)
         setInvoice(updatedInvoice)
         setInvoices(newInvoices)
     }
-
     const onFormSave = newInvoice => {
         setInvoice(newInvoice)
         setFormOpen(false)
     }
-
     const {status} = invoice || {};
 
-    return (
-            
+    return (        
         <InvoiceCont>
             { formOpen && <Form invoice={invoice} setFormOpen={setFormOpen} onFormSave={onFormSave} /> }
             <GoBackLink />
             <InvoiceHelperContainer>
-
             <StatusHelperContainer>
                 <StatusContainer>
                     <span>Status</span>
@@ -332,7 +314,6 @@ export default function InvoicePage() {
                 </PaymentStatusCont>
                 </StatusContainer>
             </StatusHelperContainer>
-
             <ButtonsContainer>
                 <Button type="edit" onClick={() => setFormOpen(true)}>
                     Edit
@@ -346,10 +327,7 @@ export default function InvoicePage() {
                     </Button>
                 )}
             </ButtonsContainer>
-
             {modalOpen && <ConfirmationModal invoiceId={id} deleteInvoice={deleteInvoice} setModalOpen={setModalOpen} />}
-
-
             {invoice ?
                 <InvoiceMainWrapper>
                 <InvoiceMain>
@@ -387,7 +365,6 @@ export default function InvoicePage() {
                             <h3>{invoice.clientEmail}</h3>
                         </div>
                     </InvoiceMainMiddle>
-                    
                     <InvoiceTotal>
                         <InvoiceTotalHeading>
                            <InvoiceTotalHeadingTitle>
@@ -396,7 +373,6 @@ export default function InvoicePage() {
                                <span>Price</span>
                                <span>Total</span>
                            </InvoiceTotalHeadingTitle>
-
                             {
                                 invoice.items.map((item, i) =>  (
                                     <InvoiceTotalHeadingInvoice key={i}>
@@ -421,14 +397,9 @@ export default function InvoicePage() {
                             <h2>£ {invoice.total}</h2>
                         </InvoiceTotalFooter>
                     </InvoiceTotal>
-
                 </InvoiceMain>
                 </InvoiceMainWrapper>
-                
-
-
                 : <div>loading...</div>}
-
             </InvoiceHelperContainer>
         </InvoiceCont>
     )

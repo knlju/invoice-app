@@ -13,7 +13,6 @@ const InvoiceWrapper = styled.div `
 		padding: 72px 0;
 	}
 `
-
 const NoInvoiceWrapper = styled.div ` 
     height: 100%;
     margin: 0 auto;
@@ -22,7 +21,6 @@ const NoInvoiceWrapper = styled.div `
     justify-content: center;
     align-items: center;
     padding: 32px 0;
-
     img {
         margin-bottom: 40px;
     }
@@ -38,11 +36,9 @@ const NoInvoiceWrapper = styled.div `
         font-weight: 700;
     }
 `
-
 export default function InvoiceList({invoices, filters}) {
     
     const filteredInvoices = filters.length === 0 ? invoices: invoices.filter(invoice => filters.includes(invoice.status))
-
     return (
         <>
             <InvoiceWrapper>
@@ -59,4 +55,3 @@ export default function InvoiceList({invoices, filters}) {
         </>
     )
 }
-

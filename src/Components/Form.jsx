@@ -626,7 +626,6 @@ const FormWrapper = styled.div `
     background-color: ${props => props.theme.color.form.bg};
     z-index: 5;
     border-radius: 0 20px 20px 0;
-    /* overflow: auto; */
     
     @media screen and (min-width: 768px) {
             max-width: 616px;
@@ -657,7 +656,6 @@ const FormButtonWrapper = styled.div `
     }
     @media screen and (min-width: 1024px) {
             max-width: 719px;
-            /* top: 0; */
     }
 `
 
@@ -783,7 +781,6 @@ export const InputWrapper = styled.span`
     input {
         width: 100%;
         border: 1px solid ${props => !props.valid ? props.theme.color.form.fieldBorder : '#EC5757'};
-        /* border: 1px solid ${props => props.theme.color.form.fieldBorder}; */
         border-radius: 4px;
         padding: 16px;
         margin-bottom: 24px;

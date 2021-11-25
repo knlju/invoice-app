@@ -7,7 +7,6 @@ const Button = styled.button`
     cursor: pointer;
     outline: none;
     position: relative;
-    
      &::after {
         content: '';
         position: absolute;
@@ -23,16 +22,10 @@ const Button = styled.button`
             height: 103px;
         }
     }
-
-    /* :focus-visible {
-        outline: 2px dotted #7E88C3;
-    } */
 `
-
 const Icon = styled.img`
     border-radius: 50%;
 `
-
 export default function ThemeToggle({ className, toggleTheme }) {
     const theme = useContext(ThemeContext)
 

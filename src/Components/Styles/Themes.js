@@ -49,7 +49,6 @@ export const light = {
 		alt: 'moon icon'
 	}
 }
-
 export const dark = {
 	color: {
 		body: {

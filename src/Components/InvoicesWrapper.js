@@ -8,7 +8,6 @@ import FilterArrow from '../assets/icon-arrow-down.svg'
 import IconCheck from '../assets/icon-check.svg'
 import Form from "./Form.jsx"
 
-
 const IconPlusCont = styled.div ` 
     background-color: #fff;
     border-radius: 50%;
@@ -19,16 +18,13 @@ const IconPlusCont = styled.div `
     background-position: center center;
     margin-right: 15px;
 `
-
 const NewInvoiceBtn = styled(Button) ` 
     display: flex;
     align-items: center;
     padding: 8px 15px 8px 8px;
     margin-left: 18px;
-
     span {
         display: none;
-
         @media screen and (min-width: 768px) {
             display: inline-block;    
             font-weight: 700;
@@ -40,21 +36,17 @@ const NewInvoiceBtn = styled(Button) `
     }
 `
 const NewInvoiceHeader = styled.div ` 
-
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* padding: 0 24px; */
     margin: 100px auto 0 auto;
     width: 100%;
-
     @media screen and (min-width: 768px) { 
         margin: 100px auto 0 auto;
     }
     @media screen and (min-width: 1024px) { 
         margin: 72px auto 0 auto;
     }
-
     .newInvoiceTitle {
         color: ${props => props.theme.color.text.heading};
     }
@@ -62,34 +54,27 @@ const NewInvoiceHeader = styled.div `
         color: ${props => props.theme.color.text.bodyA};
     }
 `
-
 const NewInvoiceHeaderFilter = styled.div ` 
     display: flex;
     align-items: center;
     justify-content: space-between;
 `
-
 const InvoicesFilterMob = styled.span ` 
     display: none;
     @media screen and (min-width: 768px) { 
         display: inline-block;
         margin-left: 4px;
     }
-
 `
-
 const InvoicesFilterContainer = styled.div ` 
     display: flex;
     align-items: center;
     justify-content: center;
-
     position: relative;
-
     &>div:first-child {
         display: flex;
         align-items: center;
         cursor: pointer;
-
         span {
             font-weight: 700;
             color: ${props => props.theme.color.text.heading};
@@ -99,7 +84,6 @@ const InvoicesFilterContainer = styled.div `
         }
     }
 `
-
 const FilterArrowDown = styled.span ` 
     background-image: url(${FilterArrow});
     display: block; 
@@ -107,12 +91,10 @@ const FilterArrowDown = styled.span `
     background-position: center center;
     width: 12px;
     height: 4px;
-
     ${({rotateArrow}) => {
         return rotateArrow && 'transform: rotate(180deg);';
     }}
 `
-
 const CheckboxModal = styled.div ` 
     position: absolute;
     top: 25px;
@@ -126,11 +108,9 @@ const CheckboxModal = styled.div `
     gap: 16px;
     box-shadow: 0px 10px 20px ${props => props.theme.color.dropdown.shadow};
     z-index: 1;
-
     @media screen and (min-width: 1024px) {
          left: -50px;
     }
-
     label {
         display: flex;
         gap: 10px;
@@ -142,13 +122,10 @@ const CheckboxModal = styled.div `
         color: #1E2139;
         cursor: pointer;
     }
-
     input {
         position:relative;
         top: 2px;
-
         display: none;
-
         :hover + span {
             border: 1px solid #7C5DFA;
         }
@@ -159,7 +136,6 @@ const CheckboxModal = styled.div `
             }
         }
     }
-
     span {
         color: ${props => props.theme.color.text.heading};
         font-weight: 700;
@@ -181,7 +157,6 @@ const Checkbox = styled.span`
     }
 `
 const NewInvoiceWrapper = styled.div ` 
-
     display: flex;
     flex-direction: column;
     margin: 0 auto;
@@ -194,15 +169,12 @@ const NewInvoiceWrapper = styled.div `
         max-width: 730px;
     }
 `
-
 const InvoicesWrapper = props => {
     const [filters, setFilters] = useState([])
     const {invoices} = useContext(InvoiceContext)
     const [showFilterModal, setShowFilterModal] = useState(false)
     const [formOpen, setFormOpen] = useState(false)
-
     const handleNewItemClick = () => setFormOpen(true)
-
     const handleFilterChange = filter => {
         const newFilters = [...filters]
         if(filters.includes(filter)){
@@ -212,7 +184,6 @@ const InvoicesWrapper = props => {
         }
         setFilters(newFilters)
     }
-
     const invoicesMessage = (num, filters) => {
     if (num === 0 && !filters) {
         return 'There are no invoices.'
@@ -227,8 +198,7 @@ const InvoicesWrapper = props => {
     } else {
         return `There are ${num} ${filters.join(", ")} invoices.`
     }
-    }
-    
+    } 
     const message = invoicesMessage(invoices && filters.length > 0 ? invoices.filter((item)=> filters.includes(item.status)).length : invoices.length, filters);
 
     return (
@@ -265,9 +235,7 @@ const InvoicesWrapper = props => {
                                 </Checkbox>
                                 <span>Paid</span> 
                             </label>
-                        </CheckboxModal>}
-
-                        
+                        </CheckboxModal>}              
                     </InvoicesFilterContainer>
                     <div>
                         <NewInvoiceBtn type="purple" onClick={handleNewItemClick}>
@@ -278,7 +246,6 @@ const InvoicesWrapper = props => {
                 </NewInvoiceHeaderFilter>
             </NewInvoiceHeader>
             <InvoiceList invoices={invoices} filters={filters} />
-
             </NewInvoiceWrapper>
         </>
     )

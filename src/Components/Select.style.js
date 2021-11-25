@@ -4,16 +4,12 @@ import ArrowIcon from '../assets/icon-arrow-down.svg'
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-    /* gap: 10px; */
 `
-
 const Label = styled.label`
     color: ${props => props.theme.color.text.formLabel};
 `
-
 const SelectWrapper = styled.div`
     position: relative;
-    
     margin-bottom: 24px;
     ::after {
         content: url(${ArrowIcon});
@@ -23,7 +19,6 @@ const SelectWrapper = styled.div`
         transform: translateY(-50%);
     }
 `
-
 const StyledSelect = styled.select`
     width: 100%;
     border: 1px solid ${props => props.theme.color.form.fieldBorder};
@@ -42,7 +37,6 @@ const StyledSelect = styled.select`
         border: 1px solid #9277FF;
     }
 `
-
 export default function Select({options, value, onChange}) {
 
     return (

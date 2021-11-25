@@ -1,8 +1,6 @@
 import {createGlobalStyle} from 'styled-components'
 
-
 export const GlobalStyles = createGlobalStyle ` 
-
     * {
         margin: 0;
         padding: 0;
@@ -62,15 +60,11 @@ export const GlobalStyles = createGlobalStyle `
         letter-spacing: -0.25px;
     }
     ::-webkit-scrollbar-track {
-        /* box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-        background-color: rgba(255, 255, 255, 0.9); */
-        /* border-radius: 8px; */
         cursor: pointer;
     }
     ::-webkit-scrollbar {
         width: 8px;
         border-radius: 4px;
-        /* background-color: rgba(255, 255, 255, 0.9); */
         cursor: pointer;
     }
     ::-webkit-scrollbar-thumb {
@@ -80,5 +74,4 @@ export const GlobalStyles = createGlobalStyle `
         height: 112px;
         cursor: pointer;
     }
-
 `

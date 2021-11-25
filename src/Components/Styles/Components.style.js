@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 
-// purple, light, dark, draft light, draft dark, delete, add new item
 export const Button = styled.button`
     border-radius: 24px;
     padding: 17px 24px;
@@ -38,7 +37,6 @@ export const Button = styled.button`
                 return "white"
         }
     }};
-
     &:hover {
         background-color: ${({theme, type}) => {
             switch (type){

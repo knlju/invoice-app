@@ -8,23 +8,18 @@ export const GoBackLinkWrapper = styled.div`
     font-weight: bold;
     font-size: 12px;
     line-height: 15px;
-    /* identical to box height, or 125% */
     letter-spacing: -0.25px;
     color: ${props => props.theme.color.text.heading};
     gap: 24px;
     align-items: center;
     margin-left: ${({margin}) => margin ? margin : "24px"};
-
     img {
         height: 9px;
     }
-
     @media screen and (min-width: 768px) {
         margin-left: 0;
     }
 `
-
-
 const GoBackLink = ({mr, linkTo, onClick}) => {
 
     console.log(mr, linkTo)
@@ -37,6 +32,4 @@ const GoBackLink = ({mr, linkTo, onClick}) => {
         </Link>
     )
 }
-
 export default GoBackLink
-

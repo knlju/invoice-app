@@ -16,7 +16,6 @@ const ModalWrapper = styled.div`
     align-items: center;
     z-index: 1;
 `
-
 const ModalContent = styled.div`
     background: #FFFFFF;
     box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.100397);
@@ -24,14 +23,12 @@ const ModalContent = styled.div`
     padding: 32px;
     max-width: 480px;
     margin: 0 24px;
-
     h2 {
         font-size: 20px;
         line-height: 160%;
         letter-spacing: -0.416667px;
         color: #0C0E16;
     }
-
     p {
         margin-top: 8px;
         font-weight: 500;
@@ -40,7 +37,6 @@ const ModalContent = styled.div`
         letter-spacing: -0.25px;
         color: #888EB0;
     }
-
     @media screen and (min-width: 768px) {
         padding: 48px;
         h2 {
@@ -49,26 +45,21 @@ const ModalContent = styled.div`
         }
     }
 `
-
 const ButtonContainer = styled.div`
     margin-top: 24px;
     display: flex;
     justify-content: flex-end;
     gap: 8px;
 `
-
 export default function ConfirmationModal({ invoiceId, deleteInvoice, setModalOpen }) {
 
     const navigate = useNavigate()
-
     const handleDeleteClick = () => {
         deleteInvoice()
         setModalOpen(false)
         navigate("/")
     }
-
     const closeModal = e => setModalOpen(false)
-
     return ReactDOM.createPortal(
         <ModalWrapper onClick={closeModal}>
             <ModalContent onClick={e => e.stopPropagation()}>

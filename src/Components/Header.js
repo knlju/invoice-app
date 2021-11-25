@@ -15,7 +15,6 @@ const HeaderStyle = styled.header `
     align-items: center;
     justify-content: space-between;
     z-index: 10;
-    
     @media screen and (min-width: 1024px) {
         flex: 0 0 103px;
         height: auto;
@@ -39,7 +38,6 @@ const HeaderLogo = styled.div `
         height: 103px;
         width: 100%;
     }
-
     &::after {
         content: '';
         position: absolute;
@@ -50,7 +48,6 @@ const HeaderLogo = styled.div `
         border-radius: 20px 0 20px 0;
         background-color: #9277FF;
     }
-
     &::before {
         content: url(${Logo});
         z-index: 1;
@@ -64,7 +61,6 @@ const HeaderIcons = styled.div `
         flex-direction: column;
     }
 `
-
 const AvatarImg = styled.img ` 
     content: url(${Avatar});
     border-radius: 50%;
@@ -77,8 +73,6 @@ const AvatarImg = styled.img `
         margin: 24px 0;
     }
 `
-
-
 export default function Header({toggleTheme}) {
     return (
         <HeaderStyle>
