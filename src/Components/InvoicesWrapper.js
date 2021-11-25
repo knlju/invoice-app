@@ -49,6 +49,9 @@ const NewInvoiceHeader = styled.div `
     width: 100%;
 
     @media screen and (min-width: 768px) { 
+        margin: 100px auto 0 auto;
+    }
+    @media screen and (min-width: 1024px) { 
         margin: 72px auto 0 auto;
     }
 

@@ -93,16 +93,17 @@ export const PaymentStatusCont = styled.div `
 	padding: 12px 12px;
 	border-radius: 6px;
     max-width: 104px;
+    min-width: 95px;
 	display: flex;
 	align-items: center;
 	gap: 8px;
 	justify-content: center;
 	background-color: rgba(51, 214, 159, 0.06);
 
-	${props => {
-		switch (props.status) {
+	${({status, theme}) => {
+		switch (status) {
 			case "draft":
-				return "background-color: rgba(55, 59, 83, 0.06);";
+                return theme.light ? "background-color: rgba(55, 59, 83, 0.06);" : "background-color: rgba(223, 227, 250, 0.06)"
 			case "pending":
 				return "background-color: rgba(255, 143, 0, 0.06);";
 			case "paid":
@@ -115,10 +116,10 @@ export const PaymentStatus = styled.span `
     text-transform: capitalize;
     font-weight: 700;
 
-	${props => {
-		switch (props.status) {
+	${({status, theme}) => {
+		switch (status) {
 			case "draft":
-				return "color: rgba(55, 59, 83, 1);";
+                return theme.light ? "color: rgba(55, 59, 83, 1);" : "color: #DFE3FA"
 			case "pending":
 				return "color: rgba(255, 143, 0, 1);";
 			case "paid":
@@ -135,10 +136,10 @@ export const PaymentStatusDot = styled.div `
         background-color: #33D69F;
 		display: inline-block;
 
-		${props => {
-		switch (props.status) {
+		${({status, theme}) => {
+		switch (status) {
 			case "draft":
-				return "background-color: rgba(55, 59, 83, 1);";
+				return theme.light ? "background-color: rgba(55, 59, 83, 1);" : "background-color: #DFE3FA";
 			case "pending":
 				return "background-color: rgba(255, 143, 0, 1);";
 			case "paid":
