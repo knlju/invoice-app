@@ -159,7 +159,7 @@ const ArrowDiv = styled.div `
 
 export default function Invoice({ id, total, status, clientName, paymentDue }) {
 
-    const dateFormatted = formatDate(new Date(paymentDue))
+    const dateFormatted = formatDate(paymentDue)
 
     return (
         <Link to={"invoices/" + id}>

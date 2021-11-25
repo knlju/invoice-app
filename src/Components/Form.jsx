@@ -7,44 +7,75 @@ import { ReactComponent as PlusSVG } from '../assets/icon-plus.svg'
 import {ReactComponent as TrashIconSVG} from '../assets/icon-delete.svg'
 import Select from '../Components/Select.style'
 import GoBackLink from './GoBackLink'
-import { getInvoiceId, getItemId, getDateFromDifference, formatDate } from '../utils/utils'
+import { getInvoiceId, getItemId, getDateFromDifference } from '../utils/utils'
 
 const FormItem = ({id, name, quantity, price, total, setItemValue, deleteItem}) => {
+
+    const [ errList, setErrList ] = useState({
+        name: name ? false : true,
+        quantity: quantity && quantity == 0,
+        price: price && price == 0
+    })
+
+    const handleNameChange = e => {
+        const { name, value } = e.target
+        setErrList(prevErrList => {
+            return {
+                ...prevErrList,
+                name: value.trim() === ""
+            }
+        })
+        setItemValue(name, value, id)
+    }
 
     const handlePriceChange = e => {
         const { name, value } = e.target
         setItemValue(name, parseFloat(value).toFixed(2), id)
         const total = parseFloat((parseFloat(value) * quantity).toFixed(2))
-        setItemValue("total", total, id)
+        const cond = value && value > 0
+        setErrList(prevErrList => {
+            return {
+                ...prevErrList,
+                price: !cond
+            }
+        })
+        if(value) setItemValue("total", total, id)
     }
 
     const handleQuantityChange = e => {
         const { name, value } = e.target
         setItemValue(name, value, id)
-        setItemValue("total", price * parseInt(value), id)
+        const cond = value && value > 0
+        setErrList(prevErrList => {
+            return {
+                ...prevErrList,
+                quantity: !cond
+            }
+        })
+        if(value) setItemValue("total", price * parseInt(value), id)
     }
 
     return (
         <>
         <FormNewItemWrapper>
             <div className="formNewItemName">
-                <InputWrapper>
+                <InputWrapper valid={errList.name}>
                     <label htmlFor="name">Item name</label>
-                    <input type="text" name="name" value={name} onChange={setItemValue} />
-                </InputWrapper>        
+                    <input type="text" name="name" value={name} onChange={handleNameChange} />
+                </InputWrapper>
             </div>
             <div className="formNewItemQPT">
                 <div>
-                    <InputWrapper>
+                    <InputWrapper valid={errList.quantity}>
                         <label htmlFor="quantity">Qty.</label>
                         <input type="number" name="quantity" min="1" value={quantity} onChange={handleQuantityChange} />
                     </InputWrapper>        
                 </div>
                 <div>
-                    <InputWrapper>
+                    <InputWrapper valid={errList.price}>
                         <label htmlFor="price">Price</label>
                         <input type="number" name="price" min="1" value={price} onChange={handlePriceChange} />
-                    </InputWrapper>        
+                    </InputWrapper>
                 </div>
                 <div>
                     <InputWrapper>
@@ -133,8 +164,8 @@ const emptyInvoice = {
     items: [
         {
             name: "New Item", 
-            quantity: 0, 
-            price: 0, 
+            quantity: 1, 
+            price: 1, 
             total: 0, 
             id: getItemId()
         }
@@ -253,7 +284,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
     const addItem = () => {
         setItems(prevItems => 
             [...prevItems, 
-                {name: "New Item", quantity: 0, price: 0, total: 0, id: getItemId()}
+                {name: "New Item", quantity: 1, price: 1, total: 0, id: getItemId()}
             ]
         )
     }
@@ -319,6 +350,15 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
         if(items.length === 0) {
             isValid = false
             setShowItemErr(true)
+        } else {
+            items.forEach(item => {
+                if(item.name === "") isValid = false
+                if(!item.quantity) isValid = false
+                if(item.quantity == 0) isValid = false
+                if(!item.price) isValid = false
+                if(item.price == 0) isValid = false
+                if(!isValid) setShowNoEmptyFieldsErr(true)
+            })
         }
         setErrList(newErrList)
         return isValid
@@ -479,7 +519,7 @@ const FormBtnsContDisDrfSave = styled.div `
                             <InputWrapper valid={errList.clientEmail}>
                                 <label htmlFor="client-email">Client’s Email</label>
                                 <span>can't be empty</span>
-                                <input type="text" name="clientEmail" value={formData.clientEmail} onBlur={e => validateFormField(e)} onChange={e => handleFormDataChange(e)} />
+                                <input type="email" name="clientEmail" placeholder="e.g. email@example.com" value={formData.clientEmail} onBlur={e => validateFormField(e)} onChange={e => handleFormDataChange(e)} />
                             </InputWrapper>
                             <InputWrapper valid={errList.clientAddress.street}>
                                 <label htmlFor="street-address">Street Address</label>
@@ -529,7 +569,7 @@ const FormBtnsContDisDrfSave = styled.div `
                             <InputWrapper valid={errList.description}>
                                 <label htmlFor="client-city">Project Description</label>
                                 <span>can't be empty</span>
-                                <input type="text" name="description" value={formData.description} onBlur={e => validateFormField(e)} onChange={e => handleFormDataChange(e)} />
+                                <input type="text" name="description" placeholder="e.g. Graphic Design Service" value={formData.description} onBlur={e => validateFormField(e)} onChange={e => handleFormDataChange(e)} />
                             </InputWrapper>
                         </div>
                     </form>
