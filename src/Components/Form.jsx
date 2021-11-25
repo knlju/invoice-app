@@ -7,6 +7,7 @@ import { ReactComponent as PlusSVG } from '../assets/icon-plus.svg'
 import {ReactComponent as TrashIconSVG} from '../assets/icon-delete.svg'
 import Select from '../Components/Select.style'
 import GoBackLink from './GoBackLink'
+import { getInvoiceId, getItemId, getDateFromDifference } from '../utils/utils'
 
 const FormItem = ({id, name, quantity, price, total, setItemValue, deleteItem}) => {
 
@@ -109,19 +110,6 @@ const FormNewItemWrapper = styled.div `
 
 `
 
-const getId = (function () {
-    let count = 0
-    return function () {
-        return count++;
-    }
-})()
-
-const getDateFromDifference = (date, difference) => {
-    const newDate = new Date(date)
-    newDate.setDate(date.getDate() + parseInt(difference))
-    return new Date(newDate).toUTCString()
-}
-
 const emptyInvoice = {
     senderAddress: {
         street: "",
@@ -145,10 +133,10 @@ const emptyInvoice = {
     items: [
         {
             name: "New Item", 
-            quantity: 1, 
-            price: 1, 
-            total: 1, 
-            id: getId()
+            quantity: 0, 
+            price: 0, 
+            total: 0, 
+            id: getItemId()
         }
     ],
     total: 0
@@ -175,12 +163,12 @@ const newErrList = {
 const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
     const getInvoiceItemsMapped = () => {
         const invoiceCopy = {...invoice}
-        invoiceCopy.items = invoiceCopy.items.map(item => {return {...item, id: getId()}})
+        invoiceCopy.items = invoiceCopy.items.map(item => {return {...item, id: getItemId()}})
         return invoiceCopy.items
     }    
 
     const [ formData, setFormData ] = useState({
-        id: invoice?.id || getId() + "",
+        id: invoice?.id || getInvoiceId() + "",
         createdAt: invoice.createdAt,
         paymentDue: invoice.paymentDue,
         description: invoice.description,
@@ -265,7 +253,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
     const addItem = () => {
         setItems(prevItems => 
             [...prevItems, 
-                {name: "New Item", quantity: 1, price: 1, total: 1, id: getId()}
+                {name: "New Item", quantity: 0, price: 0, total: 0, id: getItemId()}
             ]
         )
     }
@@ -385,7 +373,6 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
     }
 
     const btns = invoice === emptyInvoice ? (
-        // TODO add flex etc
         <>
             <div>
                 <Button type="edit" className="btn-left" onClick={e => setFormOpen(false)}>
