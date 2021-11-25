@@ -15,7 +15,6 @@ export function InvoiceProvider({ children }) {
 
     const [ invoices, setInvoices ] = useState(invoiceDataLocal || initialInvoices)
 
-    // TODO: add memo
     const value = React.useMemo(() => ({
         invoices, setInvoices
     }), [invoices]);
@@ -24,18 +23,6 @@ export function InvoiceProvider({ children }) {
         localStorage.setItem("invoices", JSON.stringify(invoices))
         document.title = `Invoices (${invoices.length})`
     }, [invoices])
-
-    // TODO: kad budemo hteli da napravimo server
-
-    // const [ invoices, setInvoice ] = useState([])
-
-    // useEffect(()=>{
-    //     (async ()=> {
-    //         const appData = await fetch("https://invoice-v1-be.herokuapp.com/invoices")
-    //         const json = await appData.json()
-    //         setInvoice(json)
-    //     })()
-    // }, [])
 
     return (
         <InvoiceContext.Provider value={value}>
