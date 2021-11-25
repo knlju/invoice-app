@@ -4,10 +4,16 @@ import invoiceMockData from "../mockdata/data.json"
 export const InvoiceContext = createContext()
 
 const invoiceDataLocal = JSON.parse(localStorage.getItem("invoices"))
+const initialInvoices = invoiceMockData.map(inv => {
+    return {...inv, 
+        createdAt: new Date(inv.createdAt),
+        paymentDue: new Date(inv.paymentDue)
+    }
+})
 
 export function InvoiceProvider({ children }) {
 
-    const [ invoices, setInvoices ] = useState(invoiceDataLocal || invoiceMockData)
+    const [ invoices, setInvoices ] = useState(invoiceDataLocal || initialInvoices)
 
     // TODO: add memo
     const value = React.useMemo(() => ({

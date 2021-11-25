@@ -7,7 +7,7 @@ import { ReactComponent as PlusSVG } from '../assets/icon-plus.svg'
 import {ReactComponent as TrashIconSVG} from '../assets/icon-delete.svg'
 import Select from '../Components/Select.style'
 import GoBackLink from './GoBackLink'
-import { getInvoiceId, getItemId, getDateFromDifference } from '../utils/utils'
+import { getInvoiceId, getItemId, getDateFromDifference, formatDate } from '../utils/utils'
 
 const FormItem = ({id, name, quantity, price, total, setItemValue, deleteItem}) => {
 
@@ -125,7 +125,7 @@ const emptyInvoice = {
         postCode: "",
         country: ""
     },
-    createdAt: new Date().toUTCString(),
+    createdAt: new Date(),
     paymentTerms: "30",
     paymentDue: getDateFromDifference(new Date(), 30),
     description: "",
@@ -235,7 +235,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
         const newDate = getDateFromDifference(new Date(formData.createdAt), diff)
         setFormData(prevData => {return {
             ...prevData,
-            paymentDue: newDate.toString(),
+            paymentDue: newDate,
             paymentTerms: diff
         }})
     }

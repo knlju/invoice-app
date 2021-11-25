@@ -30,6 +30,8 @@ const StyledSelect = styled.select`
     border-radius: 4px;
     padding: 19px;
     background: ${props => props.theme.color.form.fieldBg};
+    -webkit-appearance: none;
+    -moz-appearance: none;
     appearance: none;
     outline: none;
     color: ${props => props.theme.color.text.heading};

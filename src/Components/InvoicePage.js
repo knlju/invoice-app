@@ -8,6 +8,7 @@ import GoBackLink from './GoBackLink'
 import styled from 'styled-components'
 import {PaymentStatusCont, PaymentStatus, PaymentStatusDot} from '../Components/Invoice'
 import Form from './Form'
+import { formatDate } from '../utils/utils'
 
 const InvoiceCont = styled.div ` 
         padding: 100px 0 0;
@@ -368,9 +369,9 @@ export default function InvoicePage() {
                         <div className="dateAndBill">
                             <div className="dates">
                                     <span>Invoice Date</span>
-                                    <h3>{invoice.createdAt}</h3>
+                                    <h3>{formatDate(invoice.createdAt)}</h3>
                                     <span>Payment Due</span>
-                                    <h3>{invoice.paymentDue}</h3>
+                                    <h3>{formatDate(invoice.paymentDue)}</h3>
                             </div>
                             <div className="billTo">
                                 <span>Bill To</span>

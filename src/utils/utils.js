@@ -15,5 +15,9 @@ export const getInvoiceId = (function () {
 export const getDateFromDifference = (date, difference) => {
     const newDate = new Date(date)
     newDate.setDate(date.getDate() + parseInt(difference))
-    return new Date(newDate).toUTCString()
+    return new Date(newDate)
 }
+
+export const formatDate = date => date.toLocaleDateString('en-GB', {
+    day: 'numeric', month: 'short', year: 'numeric'
+})

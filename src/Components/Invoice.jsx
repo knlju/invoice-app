@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-// import {GlobalStyles} from '../Components/Styles/GlobalStyles'
+import { formatDate } from "../utils/utils" 
 import ArrowRight from '../assets/icon-arrow-right.svg'
 
 
@@ -158,6 +158,9 @@ const ArrowDiv = styled.div `
 
 
 export default function Invoice({ id, total, status, clientName, paymentDue }) {
+
+    const dateFormatted = formatDate(new Date(paymentDue))
+
     return (
         <Link to={"invoices/" + id}>
             <InvoiceSection>
@@ -167,7 +170,7 @@ export default function Invoice({ id, total, status, clientName, paymentDue }) {
                 </IdWrapper>
                 <span className="clientName">{clientName}</span>
 
-                <PaymentDue>{paymentDue}</PaymentDue>
+                <PaymentDue>{dateFormatted}</PaymentDue>
 				<TotalDue>£ {total}</TotalDue>
 
 				<PaymentStatusCont status={status}>
