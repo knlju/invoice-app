@@ -91,7 +91,7 @@ const FormNewItemWrapper = styled.div `
             line-height: 15px;
             letter-spacing: -0.25px;
             color: #888eb0;
-            margin-top: 26px;
+            margin-top: 16px;
         }
     }
     .formTrashBtn {
@@ -371,15 +371,33 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
         setInvoices(newInvoices)
         setFormOpen(false)
     }
+const FormBtnsContDisDrfSave = styled.div ` 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 7px;
+    width: 100%;
 
+    button {
+            padding: 16px 15px;
+        }
+
+    .formBtnsContDrfSav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 7px;
+    }
+`
     const btns = invoice === emptyInvoice ? (
         <>
-            <div>
+        <FormBtnsContDisDrfSave>
+            <div className="formBtnsContDiscard">
                 <Button type="edit" className="btn-left" onClick={e => setFormOpen(false)}>
                     Discard
                 </Button>
             </div>
-            <div>
+            <div className="formBtnsContDrfSav">
                 <Button type="draft" onClick={saveAsDraft}>
                     Save as Draft
                 </Button>
@@ -387,6 +405,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
                     Save & Send
                 </Button>
             </div>
+        </FormBtnsContDisDrfSave>
         </>
     ) : (
         <>
@@ -490,14 +509,18 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
                                 </InputWrapper>
                             </div>
                         </div>
-                        <div>
-                            <InputWrapper>
-                                <label htmlFor="createdAt">Invoice Date</label>
-                                <input type="date" name="createdAt" value={formData.createdAt} {...dateProps} />
-                            </InputWrapper>
-                            <InputWrapper>
-                                <Select label="Payment Terms" name="paymentTerms" options={dropdownOptions} value={formData.paymentTerms} onChange={e => handlePaymentDueChange(e)} />
-                            </InputWrapper>
+                        <div className="formContforDateTerms">
+                            <div>
+                                <InputWrapper>
+                                    <label htmlFor="createdAt">Invoice Date</label>
+                                    <input type="date" name="createdAt" value={formData.createdAt} {...dateProps} />
+                                </InputWrapper>
+                            </div>
+                            <div>
+                                <InputWrapper>
+                                    <Select label="Payment Terms" name="paymentTerms" options={dropdownOptions} value={formData.paymentTerms} onChange={e => handlePaymentDueChange(e)} />
+                                </InputWrapper>
+                            </div>
                         </div>
                         <div>
                             <InputWrapper valid={errList.description}>
@@ -559,6 +582,7 @@ const FormWrapper = styled.div `
     bottom: 0;
     background-color: ${props => props.theme.color.form.bg};
     z-index: 5;
+    border-radius: 0 20px 20px 0;
     /* overflow: auto; */
     
     @media screen and (min-width: 768px) {
@@ -635,6 +659,18 @@ const FormMainWrapper = styled.div `
         }
         @media screen and (min-width: 1024px) {
             max-height: calc(100vh - 220px);
+        }
+    }
+    .formContforDateTerms {
+        @media screen and (min-width: 768px) {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+
+            div {
+                flex: 0 1 50%;
+            }
         }
     }
 
@@ -718,7 +754,6 @@ export const InputWrapper = styled.span`
         }
     }
     span {
-        display: inline-block;
         visibility: ${props => !props.valid ? 'hidden' : 'visible'};
         color: #EC5757;
         font-weight: 500;

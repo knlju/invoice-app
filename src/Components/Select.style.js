@@ -4,7 +4,7 @@ import ArrowIcon from '../assets/icon-arrow-down.svg'
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    /* gap: 10px; */
 `
 
 const Label = styled.label`
@@ -28,7 +28,7 @@ const StyledSelect = styled.select`
     width: 100%;
     border: 1px solid ${props => props.theme.color.form.fieldBorder};
     border-radius: 4px;
-    padding: 16px;
+    padding: 19px;
     background: ${props => props.theme.color.form.fieldBg};
     appearance: none;
     outline: none;
