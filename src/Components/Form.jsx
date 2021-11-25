@@ -458,7 +458,7 @@ const FormBtnsContDisDrfSave = styled.div `
     )
 
     const calculateTotal = () => setTotalState(items.reduce((total, item) => parseFloat((total +  parseFloat(item.total)).toFixed(2)), 0))
-    const dateProps = invoice === emptyInvoice ?  {onChange:e => handleFormDataChange(e)} : {readOnly: true}
+    const dateProps = invoice === emptyInvoice || invoice.status === "draft" ?  {onChange:e => handleFormDataChange(e)} : {readOnly: true}
 
     return ReactDOM.createPortal(
         <>
