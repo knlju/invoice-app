@@ -15,7 +15,7 @@ const IconPlusCont = styled.div `
     width: 32px;
     background-image: url(${IconPlus});
     background-repeat: no-repeat;
-    background-position: center center;
+    background-position: 11px 11px;
     margin-right: 15px;
 `
 const NewInvoiceBtn = styled(Button) ` 
@@ -91,7 +91,7 @@ const FilterArrowDown = styled.span `
     background-repeat: no-repeat;
     background-position: center center;
     width: 12px;
-    height: 4px;
+    height: 12px;
     ${({rotateArrow}) => {
         return rotateArrow && 'transform: rotate(180deg);';
     }}
