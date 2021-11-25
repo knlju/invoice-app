@@ -274,11 +274,11 @@ export default function InvoicePage() {
     const [invoice, setInvoice] = useState({})
     const [modalOpen, setModalOpen] = useState(false)
     const [formOpen, setFormOpen] = useState(false)
-    const findInvoice = id => invoices.find(inv => inv.id === id)
+    // const findInvoice = id => invoices.find(inv => inv.id === id)
 
     useEffect(() => {
-        const foundInv = findInvoice(id)
-        setInvoice(foundInv)
+        // const foundInv = findInvoice(id)
+        // setInvoice(foundInv)
     }, [])
 
     const deleteInvoice = () => {
