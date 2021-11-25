@@ -22,7 +22,6 @@ export const GoBackLinkWrapper = styled.div`
 `
 const GoBackLink = ({mr, linkTo, onClick}) => {
 
-    console.log(mr, linkTo)
     return (
         <Link to={linkTo || "/"} onClick={onClick}>
             <GoBackLinkWrapper margin={mr}>

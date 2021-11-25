@@ -298,17 +298,13 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
     }
 
     const updateErrState = (attr, isValid = true, nested = false) => {
-        console.log(attr, isValid, nested)
         const newErrList = {...errList}
-        console.log("errListCopy", newErrList)
         if(nested) {
             const nestedCopy = {...errList[nested]}
             nestedCopy[attr] = isValid
             newErrList[nested] = nestedCopy
-            console.log("errListCopy nested", newErrList)
         } else {
             newErrList[attr] = isValid
-            console.log("errListCopy attr only", newErrList)
         }
         setErrList(newErrList)
     }
@@ -355,7 +351,7 @@ const Form = ({invoice = emptyInvoice, setFormOpen, onFormSave = () => {}}) => {
                 if(item.name === "") isValid = false
                 if(!item.quantity) isValid = false
                 if(item.quantity == 0) isValid = false
-                if(!item.price) isValid = false
+                if(!parseFloat(item.price)) isValid = false
                 if(item.price == 0) isValid = false
                 if(!isValid) setShowNoEmptyFieldsErr(true)
             })

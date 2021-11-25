@@ -146,7 +146,7 @@ export default function Invoice({ id, total, status, clientName, paymentDue }) {
                     <ClientId>{id}</ClientId>
                 </IdWrapper>
                 <span className="clientName">{clientName}</span>
-                <PaymentDue>{dateFormatted}</PaymentDue>
+                <PaymentDue>Due {dateFormatted}</PaymentDue>
 				<TotalDue>£ {total}</TotalDue>
 				<PaymentStatusCont status={status}>
 					<PaymentStatusDot status={status} />
